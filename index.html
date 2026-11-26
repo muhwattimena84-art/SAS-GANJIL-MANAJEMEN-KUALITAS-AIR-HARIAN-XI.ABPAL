@@ -1,0 +1,3428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAS Ganjil 2026/2027 - Manajemen Kualitas Air Harian | SMK Waliwa Laimu</title>
+    <style>
+        /* ==========================================================================
+           1. DESIGN TOKENS & VARIABEL TEMA BUDIDAYA PERIKANAN (OFFLINE PURE CSS)
+           ========================================================================== */
+        :root {
+            --primary: #025b8c;       /* Biru Laut Dalam */
+            --primary-dark: #013d5e;
+            --primary-light: #e0f2fe;
+            --secondary: #0d9488;     /* Hijau Toska Perairan */
+            --secondary-light: #ccfbf1;
+            --accent: #f59e0b;        /* Kuning Ragu-ragu / Peringatan */
+            --danger: #dc2626;        /* Merah Bahaya */
+            --success: #16a34a;       /* Hijau Selesai */
+            --bg-body: #f0f7fa;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --shadow-sm: 0 1px 3px rgba(2, 91, 140, 0.08);
+            --shadow-md: 0 4px 12px rgba(2, 91, 140, 0.12);
+            --shadow-lg: 0 10px 25px rgba(2, 91, 140, 0.18);
+            --radius: 12px;
+            --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           2. HEADER & NAVIGASI UTAMA
+           ========================================================================== */
+        header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--secondary) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .school-logo {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        .brand-text h1 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+        }
+
+        .brand-text p {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        nav.main-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 0.55rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn.active {
+            background: white;
+            color: var(--primary-dark);
+            border-color: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* ==========================================================================
+           3. LAYOUT UTAMA & KOMPONEN UMUM
+           ========================================================================== */
+        main {
+            flex: 1;
+            max-width: 1280px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.25rem;
+        }
+
+        .section-view {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .section-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.85rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tombol */
+        .btn {
+            padding: 0.65rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+        .btn-secondary:hover:not(:disabled) { background: #0f766e; }
+
+        .btn-warning {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-warning:hover:not(:disabled) { background: #d97706; }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover:not(:disabled) { background: #b91c1c; }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover:not(:disabled) { background: var(--primary-light); }
+
+        .btn-sm {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+            color: var(--text-main);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* Grid Sistem */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+
+        /* Stat Cards */
+        .stat-card {
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary);
+            border-radius: 10px;
+            padding: 1.1rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-card.teal { border-left-color: var(--secondary); }
+        .stat-card.amber { border-left-color: var(--accent); }
+        .stat-card.green { border-left-color: var(--success); }
+
+        .stat-label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+        .stat-value { font-size: 1.75rem; font-weight: 800; color: var(--primary-dark); margin-top: 0.25rem; }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .badge-blue { background: var(--primary-light); color: var(--primary-dark); }
+        .badge-teal { background: var(--secondary-light); color: #0f766e; }
+        .badge-amber { background: #fef3c7; color: #b45309; }
+        .badge-green { background: #dcfce7; color: #15803d; }
+        .badge-red { background: #fee2e2; color: #b91c1c; }
+
+        /* Tabel Responsif */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            background: white;
+        }
+
+        th, td {
+            padding: 0.75rem 0.9rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        tr:hover td { background-color: #f8fafc; }
+
+        /* ==========================================================================
+           4. HALAMAN BERANDA (HERO)
+           ========================================================================== */
+        .hero-banner {
+            background: linear-gradient(120deg, var(--primary-dark) 0%, var(--primary) 55%, var(--secondary) 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 2.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::after {
+            content: "";
+            position: absolute;
+            right: -40px;
+            bottom: -40px;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-title {
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+            line-height: 1.25;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            opacity: 0.95;
+            margin-bottom: 1.25rem;
+        }
+
+        .meta-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meta-pill {
+            background: rgba(0,0,0,0.22);
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* ==========================================================================
+           5. ANTARMUKA PENGERJAAN UJIAN (CBT INTERFACE)
+           ========================================================================== */
+        .exam-layout {
+            display: grid;
+            grid-template-columns: 1fr 310px;
+            gap: 1.25rem;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .exam-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .exam-topbar {
+            background: var(--primary-dark);
+            color: white;
+            padding: 0.85rem 1.25rem;
+            border-radius: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .timer-box {
+            background: #dc2626;
+            color: white;
+            padding: 0.45rem 1rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.15rem;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+
+        .question-box {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+            background: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .option-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            padding: 0.85rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: white;
+        }
+
+        .option-item:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .option-item.selected {
+            border-color: var(--primary);
+            background: #e0f2fe;
+            box-shadow: 0 2px 6px rgba(2, 91, 140, 0.12);
+        }
+
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: var(--text-main);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .option-item.selected .option-letter {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Navigasi Nomor Soal */
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.45rem;
+            margin: 1rem 0;
+        }
+
+        .q-num-btn {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 1.5px solid var(--border-color);
+            background: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .q-num-btn.answered {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .q-num-btn.doubt {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .q-num-btn.current {
+            outline: 3px solid var(--primary);
+            outline-offset: 1px;
+            transform: scale(1.05);
+        }
+
+        /* ==========================================================================
+           6. SERTIFIKAT & MODAL KUSTOM (PENGGANTI ALERT/CONFIRM)
+           ========================================================================== */
+        .certificate-wrapper {
+            background: white;
+            border: 12px double var(--primary);
+            padding: 2.5rem;
+            border-radius: 8px;
+            max-width: 850px;
+            margin: 1rem auto;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow-lg);
+            background-image: radial-gradient(#e0f2fe 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .cert-inner {
+            background: rgba(255,255,255,0.96);
+            padding: 2rem;
+            border: 2px solid var(--secondary);
+        }
+
+        /* Modal System */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-dialog {
+            background: white;
+            border-radius: 14px;
+            max-width: 560px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal-lg {
+            max-width: 820px;
+        }
+
+        /* Sub-tabs dalam Admin & Dashboard */
+        .sub-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .sub-tab-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .sub-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Bar Chart CSS Murni */
+        .bar-chart-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.65rem;
+        }
+        .bar-label { width: 130px; font-size: 0.85rem; font-weight: 600; }
+        .bar-track { flex: 1; background: #e2e8f0; height: 22px; border-radius: 999px; overflow: hidden; }
+        .bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 0.4s ease; }
+        .bar-val { width: 55px; text-align: right; font-weight: 700; font-size: 0.85rem; }
+
+        /* Layar Penguncian Pelanggaran Ujian (Lockdown Overlay) */
+        .lockdown-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(127, 29, 29, 0.96);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            backdrop-filter: blur(6px);
+            animation: pulseRedBg 1.5s infinite alternate;
+        }
+
+        .lockdown-overlay.active {
+            display: flex;
+        }
+
+        @keyframes pulseRedBg {
+            from { background: rgba(127, 29, 29, 0.96); }
+            to { background: rgba(185, 28, 28, 0.98); }
+        }
+
+        .lockdown-card {
+            background: #ffffff;
+            border: 4px solid #ef4444;
+            border-radius: 16px;
+            max-width: 480px;
+            width: 100%;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        footer {
+            background: var(--primary-dark);
+            color: rgba(255,255,255,0.85);
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.82rem;
+            margin-top: 2rem;
+        }
+
+        /* ==========================================================================
+           7. ATURAN CETAK (PRINT STYLES)
+           ========================================================================== */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printArea, #printArea * {
+                visibility: visible;
+            }
+            #printArea {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================================================
+         HEADER & NAVIGASI UTAMA
+         ====================================================================== -->
+    <header class="no-print">
+        <div class="header-container">
+            <div class="brand-box">
+                <div class="school-logo" aria-label="Logo SMK Waliwa Laimu">
+                    <!-- SVG Logo Tema Perikanan & Pendidikan -->
+                    <svg width="34" height="34" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="22" fill="#e0f2fe" stroke="#025b8c" stroke-width="2.5"/>
+                        <path d="M10 26C15 19 26 17 36 24C26 31 15 29 10 26Z" fill="#0d9488"/>
+                        <path d="M35 24L41 19V29L35 24Z" fill="#025b8c"/>
+                        <circle cx="16" cy="24" r="2" fill="white"/>
+                        <path d="M12 34C18 32 24 36 30 34C34 32.5 37 33.5 39 34.5" stroke="#025b8c" stroke-width="2.2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1 id="hdrSchoolName">SMK WALIWA LAIMU</h1>
+                    <p id="hdrSubInfo">SAS Ganjil 2026/2027 • Manajemen Kualitas Air Harian (XI Fase F)</p>
+                </div>
+            </div>
+
+            <nav class="main-nav" id="mainNav">
+                <button class="nav-btn active" onclick="navigateTo('beranda')" data-nav="beranda">
+                    🏠 Beranda
+                </button>
+                <button class="nav-btn" onclick="navigateTo('ujian')" data-nav="ujian">
+                    ✍️ Mulai Ujian
+                </button>
+                <button class="nav-btn" onclick="navigateTo('hasil')" data-nav="hasil">
+                    📋 Hasil Peserta
+                </button>
+                <button class="nav-btn" onclick="navigateTo('sertifikat')" data-nav="sertifikat">
+                    🎓 Sertifikat
+                </button>
+                <button class="nav-btn" onclick="navigateTo('dashboard')" data-nav="dashboard">
+                    📊 Dashboard Guru
+                </button>
+                <button class="nav-btn" onclick="navigateTo('admin')" data-nav="admin">
+                    ⚙️ Admin
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ======================================================================
+         KONTEN UTAMA
+         ====================================================================== -->
+    <main>
+
+        <!-- ==================================================================
+             1. MENU BERANDA
+             ================================================================== -->
+        <section id="view-beranda" class="section-view active">
+            <div class="hero-banner">
+                <span class="hero-badge">ASESMEN BERBASIS KOMPUTER / OFFLINE CBT</span>
+                <h2 class="hero-title" id="heroExamTitle">SUMATIF AKHIR SEMESTER GANJIL</h2>
+                <p class="hero-subtitle" id="heroSubjectInfo">Mata Pelajaran: Manajemen Kualitas Air Harian — Kelas XI Fase F</p>
+
+                <div class="meta-pills">
+                    <div class="meta-pill">🏫 <span id="pillSchool">SMK Waliwa Laimu</span></div>
+                    <div class="meta-pill">👨‍🏫 Guru: <strong id="pillTeacher">Muh. Kasim Wattimena, S.Pd., Gr.</strong></div>
+                    <div class="meta-pill">📆 Tanggal: <strong id="pillDate">27 November 2026</strong></div>
+                    <div class="meta-pill">📅 TP: <strong id="pillYear">2026/2027</strong></div>
+                    <div class="meta-pill">⏱️ Durasi: <strong id="pillDuration">120 Menit</strong></div>
+                    <div class="meta-pill">📝 Total: <strong>35 Soal (30 PG & 5 Essay)</strong></div>
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
+                    <button class="btn btn-warning" style="font-size:1rem; padding:0.8rem 1.6rem;" onclick="navigateTo('ujian')">
+                        🚀 MULAI UJIAN SEKARANG
+                    </button>
+                    <button class="btn" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.4);" onclick="openKisiKisiModal()">
+                        📑 Lihat Kisi-Kisi & Capaian Pembelajaran
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📌 Identitas Pelaksanaan Asesmen</h3>
+                    </div>
+                    <table>
+                        <tbody>
+                            <tr><th style="width:42%">Satuan Pendidikan</th><td id="tblSchool">SMK Waliwa Laimu</td></tr>
+                            <tr><th>Guru Pengampu</th><td id="tblTeacher">Muh. Kasim Wattimena, S.Pd., Gr.</td></tr>
+                            <tr><th>Mata Pelajaran</th><td id="tblSubject">Manajemen Kualitas Air Harian</td></tr>
+                            <tr><th>Kelas / Fase</th><td id="tblClass">XI / Fase F (Agribisnis Perikanan)</td></tr>
+                            <tr><th>Semester / Tahun</th><td id="tblTerm">Ganjil / 2026/2027</td></tr>
+                            <tr><th>Tanggal Pelaksanaan</th><td id="tblDate">27 November 2026</td></tr>
+                            <tr><th>Komposisi & Bobot</th><td>30 Pilihan Ganda (60%) + 5 Essay (40%)</td></tr>
+                            <tr><th>Waktu Pengerjaan</th><td id="tblDuration">120 Menit (Timer Otomatis)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">📖 Petunjuk Penggunaan Aplikasi</h3>
+                    </div>
+                    <ol style="padding-left:1.25rem; display:flex; flex-direction:column; gap:0.6rem; font-size:0.93rem;">
+                        <li>Aplikasi ini berjalan <strong>100% OFFLINE</strong>. Pastikan Anda tidak menutup atau menghapus cache browser selama ujian berlangsung.</li>
+                        <li>Klik tombol <strong>Mulai Ujian</strong>, lalu isi <strong>Nama Lengkap, Kelas, dan Nomor Peserta</strong> dengan benar.</li>
+                        <li>Soal berjumlah <strong>35 butir</strong> (No. 1–30 Pilihan Ganda dan No. 31–35 Essay). Jawaban otomatis tersimpan setiap kali Anda memilih atau mengetik.</li>
+                        <li>Gunakan panel <strong>Navigasi Nomor Soal</strong> di sisi kanan/bawah untuk berpindah soal dengan cepat atau menandai soal <strong>Ragu-ragu</strong>.</li>
+                        <li><strong>Integritas Ujian:</strong> Dilarang berpindah tab atau meninggalkan jendela ujian; setiap pelanggaran akan tercatat pada sistem pengawas.</li>
+                        <li>Setelah selesai, klik tombol <strong>Selesai Ujian</strong>. Nilai Pilihan Ganda akan langsung keluar, sedangkan nilai Essay akan dikoreksi oleh Guru Pengampu.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             2. MENU MULAI UJIAN (FORM IDENTITAS + AREA CBT)
+             ================================================================== -->
+        <section id="view-ujian" class="section-view">
+            <!-- Langkah 1: Form Identitas Peserta -->
+            <div id="examLoginBox" class="card" style="max-width:600px; margin:0 auto;">
+                <div class="card-header">
+                    <h3 class="card-title">🪪 Identitas Peserta Ujian</h3>
+                    <span class="badge badge-blue">SAS Ganjil 2026/2027</span>
+                </div>
+
+                <div id="resumeSessionAlert" style="display:none; background:#fef3c7; border:1px solid #f59e0b; padding:0.9rem; border-radius:8px; margin-bottom:1rem;">
+                    <strong>⚠️ Sesi Ujian Terdeteksi!</strong>
+                    <p style="font-size:0.88rem; margin:0.35rem 0 0.75rem;">Ditemukan pengerjaan ujian yang belum diselesaikan atas nama <span id="resumeStudentName" style="font-weight:700;"></span>.</p>
+                    <button class="btn btn-warning btn-sm" onclick="resumeActiveExam()">▶️ Lanjutkan Ujian Sebelumnya</button>
+                </div>
+
+                <form id="examStartForm" onsubmit="handleStartExam(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="inpNama">Nama Lengkap Peserta Didik *</label>
+                        <input type="text" id="inpNama" class="form-control" placeholder="Contoh: Ahmad Fauzan Pattimura" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inpNisn">NIS / NISN *</label>
+                        <input type="text" id="inpNisn" class="form-control" placeholder="Contoh: 24105 / 0081234567" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inpKelas">Kelas / Kompetensi Keahlian *</label>
+                        <input type="text" id="inpKelas" class="form-control" value="XI Fase F - Agribisnis Perikanan" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inpNoPeserta">Nomor Peserta Ujian *</label>
+                        <input type="text" id="inpNoPeserta" class="form-control" placeholder="Contoh: 26-11-001" required>
+                    </div>
+                    <div style="background:#f0f9ff; border:1px solid #bae6fd; padding:0.85rem; border-radius:8px; font-size:0.85rem; margin-bottom:1.1rem; color:#0369a1;">
+                        <strong>Catatan Penting:</strong> Satu Nomor Peserta hanya dapat mengirimkan jawaban satu kali. Pastikan identitas sesuai kartu ujian.
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%; padding:0.8rem; font-size:1rem;">
+                        ✅ MULAI MENGERJAKAN SOAL
+                    </button>
+                </form>
+            </div>
+
+            <!-- Langkah 2: Area Pengerjaan Soal -->
+            <div id="examActiveArea" style="display:none;">
+                <div class="exam-topbar">
+                    <div>
+                        <div style="font-weight:700; font-size:1rem;" id="activeStudentBanner">Peserta: -</div>
+                        <div style="font-size:0.8rem; opacity:0.85;" id="activeProgressText">Terjawab: 0 / 35 Soal | Pelanggaran Tab: 0</div>
+                    </div>
+                    <div class="timer-box" title="Sisa Waktu Ujian">
+                        ⏳ <span id="examTimerDisplay">120:00</span>
+                    </div>
+                </div>
+
+                <div class="exam-layout">
+                    <!-- Kolom Kiri: Tampilan Soal -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <span class="badge badge-blue" id="qTypeBadge">PILIHAN GANDA</span>
+                                <span class="badge badge-teal" id="qLevelBadge">Level 1</span>
+                                <span style="font-weight:800; font-size:1.1rem; margin-left:0.5rem;" id="qNumberHeading">Soal No. 1</span>
+                            </div>
+                            <span style="font-size:0.8rem; color:var(--success); font-weight:600;" id="autoSaveIndicator">💾 Tersimpan otomatis</span>
+                        </div>
+
+                        <div class="question-box" id="questionTextContainer">
+                            Memuat teks soal...
+                        </div>
+
+                        <!-- Kontainer Pilihan Ganda -->
+                        <div id="mcOptionsContainer" class="option-list"></div>
+
+                        <!-- Kontainer Essay -->
+                        <div id="essayInputContainer" style="display:none;">
+                            <label class="form-label" for="essayAnswerTextarea">Tuliskan Jawaban Uraian Anda Secara Lengkap dan Sistematis:</label>
+                            <textarea id="essayAnswerTextarea" class="form-control" rows="7" placeholder="Ketik jawaban essay Anda di sini..." oninput="handleEssayInput(this.value)"></textarea>
+                        </div>
+
+                        <!-- Tombol Navigasi Bawah Soal -->
+                        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:0.75rem; margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border-color);">
+                            <button class="btn btn-outline" id="btnPrevQ" onclick="changeQuestion(-1)">⬅️ Sebelumnya</button>
+
+                            <button class="btn btn-warning" id="btnToggleDoubt" onclick="toggleDoubtCurrent()">
+                                🚩 Tandai Ragu-Ragu
+                            </button>
+
+                            <button class="btn btn-primary" id="btnNextQ" onclick="changeQuestion(1)">Berikutnya ➡️</button>
+                        </div>
+                    </div>
+
+                    <!-- Kolom Kanan: Peta Nomor Soal -->
+                    <div class="card">
+                        <h4 style="font-size:0.95rem; font-weight:700; color:var(--primary-dark); margin-bottom:0.5rem;">🧭 Navigasi Nomor Soal</h4>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; font-size:0.75rem; margin-bottom:0.5rem;">
+                            <span><strong style="color:var(--success);">■</strong> Dijawab</span>
+                            <span><strong style="color:var(--accent);">■</strong> Ragu</span>
+                            <span><strong style="color:#94a3b8;">□</strong> Belum</span>
+                        </div>
+
+                        <div style="font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-top:0.5rem;">Pilihan Ganda (1–30)</div>
+                        <div class="nav-grid" id="navGridPG"></div>
+
+                        <div style="font-size:0.78rem; font-weight:700; color:var(--text-muted); margin-top:0.75rem;">Uraian / Essay (31–35)</div>
+                        <div class="nav-grid" id="navGridEssay"></div>
+
+                        <button class="btn btn-danger" style="width:100%; margin-top:1rem; padding:0.75rem;" onclick="confirmFinishExam()">
+                            🏁 SELESAI & KUMPULKAN UJIAN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             3. MENU HASIL PESERTA
+             ================================================================== -->
+        <section id="view-hasil" class="section-view">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">📋 Daftar Hasil Sumatif Akhir Semester</h3>
+                    <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                        <button class="btn btn-secondary btn-sm" onclick="exportResultsCSV()">📥 Ekspor Excel / CSV</button>
+                        <button class="btn btn-outline btn-sm" onclick="printResultsTable()">🖨️ Cetak Rekap Hasil</button>
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
+                    <input type="text" id="searchResultInput" class="form-control" style="max-width:360px;" placeholder="🔍 Cari nama peserta atau nomor peserta..." oninput="renderResultsTable()">
+                </div>
+
+                <div class="table-responsive" id="resultsTableWrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>No. Peserta</th>
+                                <th>NIS / NISN</th>
+                                <th>Nama Lengkap</th>
+                                <th>Kelas</th>
+                                <th>PG (B/S)</th>
+                                <th>Nilai PG (60%)</th>
+                                <th>Nilai Essay (40%)</th>
+                                <th>Nilai Akhir</th>
+                                <th>Predikat</th>
+                                <th>Status Koreksi</th>
+                                <th>Waktu Selesai</th>
+                                <th class="no-print">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTableBody">
+                            <tr><td colspan="13" style="text-align:center; padding:1.5rem;">Belum ada data hasil ujian tersimpan.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             4. MENU SERTIFIKAT
+             ================================================================== -->
+        <section id="view-sertifikat" class="section-view">
+            <div class="card no-print">
+                <div class="card-header">
+                    <h3 class="card-title">🎓 Generator Sertifikat Hasil SAS</h3>
+                    <button class="btn btn-primary" onclick="printCertificate()">🖨️ Cetak / Simpan PDF Sertifikat</button>
+                </div>
+                <div class="form-group" style="max-width:450px;">
+                    <label class="form-label" for="certParticipantSelect">Pilih Peserta Didik:</label>
+                    <select id="certParticipantSelect" class="form-control" onchange="renderCertificatePreview()">
+                        <option value="">-- Pilih Peserta yang Telah Menyelesaikan Ujian --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="certificateContainer">
+                <div class="card" style="text-align:center; color:var(--text-muted); padding:2.5rem;">
+                    Silakan pilih nama peserta pada daftar di atas untuk menampilkan pratinjau sertifikat resmi.
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             5. MENU DASHBOARD GURU (STATISTIK & KOREKSI ESSAY)
+             ================================================================== -->
+        <section id="view-dashboard" class="section-view">
+            <!-- Form Login Dashboard Guru -->
+            <div id="dashboardLoginBox" class="card" style="max-width:440px; margin:1rem auto;">
+                <div class="card-header">
+                    <h3 class="card-title">🔐 Login Dashboard Guru</h3>
+                </div>
+                <form onsubmit="handleDashboardLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="dashboardPassInput">Kata Sandi Guru / Admin</label>
+                        <input type="password" id="dashboardPassInput" class="form-control" placeholder="Masukkan kata sandi..." required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">🔓 Masuk Dashboard Guru</button>
+                </form>
+            </div>
+
+            <!-- Konten Utama Dashboard Guru -->
+            <div id="dashboardMainContent" style="display:none;">
+                <div style="display:flex; justify-content:flex-end; margin-bottom:1rem;">
+                    <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">🔒 Kunci Sesi Guru / Admin</button>
+                </div>
+
+                <div class="grid-4" style="margin-bottom:1.25rem;">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Peserta Terdaftar</div>
+                        <div class="stat-value" id="statTotalPeserta">0</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-label">Sudah Selesai Ujian</div>
+                        <div class="stat-value" id="statSelesai">0</div>
+                    </div>
+                    <div class="stat-card amber">
+                        <div class="stat-label">Sedang Mengerjakan</div>
+                        <div class="stat-value" id="statBelum">0</div>
+                    </div>
+                    <div class="stat-card teal">
+                        <div class="stat-label">Rata-Rata Nilai Akhir</div>
+                        <div class="stat-value" id="statRataRata">0.0</div>
+                    </div>
+                </div>
+
+                <div class="grid-2" style="margin-bottom:1.25rem;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📈 Grafik Sebaran Predikat Nilai</h3>
+                        </div>
+                        <div id="gradeChartContainer">
+                            <p style="color:var(--text-muted); font-size:0.9rem;">Belum ada data nilai untuk ditampilkan.</p>
+                        </div>
+                        <div style="margin-top:1rem; padding-top:0.75rem; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; font-size:0.88rem;">
+                            <span>Nilai Tertinggi: <strong id="statMaxScore" style="color:var(--success);">0</strong></span>
+                            <span>Nilai Terendah: <strong id="statMinScore" style="color:var(--danger);">0</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">✍️ Penilaian Jawaban Essay (Manual Guru)</h3>
+                            <span class="badge badge-amber">Bobot 40%</span>
+                        </div>
+                        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1rem;">
+                            Pilih peserta di bawah ini untuk memeriksa jawaban uraian nomor 31–35 berdasarkan pedoman penskoran yang tersedia.
+                        </p>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nama Peserta</th>
+                                        <th>Nilai PG</th>
+                                        <th>Status Essay</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="essayGradingListBody">
+                                    <tr><td colspan="4" style="text-align:center;">Belum ada peserta mengumpulkan ujian.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================
+             6. MENU ADMIN (TERPROTEKSI KATA SANDI)
+             ================================================================== -->
+        <section id="view-admin" class="section-view">
+            <!-- Form Login Admin -->
+            <div id="adminLoginBox" class="card" style="max-width:440px; margin:1rem auto;">
+                <div class="card-header">
+                    <h3 class="card-title">🔐 Login Administrator / Guru</h3>
+                </div>
+                <form onsubmit="handleAdminLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="adminPassInput">Kata Sandi Guru / Admin</label>
+                        <input type="password" id="adminPassInput" class="form-control" placeholder="Masukkan kata sandi..." required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">🔓 Masuk Panel Admin</button>
+                </form>
+            </div>
+
+            <!-- Panel Kontrol Admin -->
+            <div id="adminControlPanel" style="display:none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">⚙️ Panel Kontrol Administrator Ujian</h3>
+                        <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">🔒 Keluar Admin</button>
+                    </div>
+
+                    <div class="sub-tabs">
+                        <button class="sub-tab-btn active" onclick="switchAdminTab('identitas', this)">1. Identitas & Bobot</button>
+                        <button class="sub-tab-btn" onclick="switchAdminTab('banksoal', this)">2. Bank Soal & Kunci (35)</button>
+                        <button class="sub-tab-btn" onclick="switchAdminTab('kisikisi', this)">3. Kisi-Kisi Otomatis</button>
+                        <button class="sub-tab-btn" onclick="switchAdminTab('peserta', this)">4. Kelola Peserta & Reset</button>
+                        <button class="sub-tab-btn" onclick="switchAdminTab('backup', this)">5. Backup & Restore Offline</button>
+                    </div>
+
+                    <!-- Tab 1: Identitas & Pengaturan -->
+                    <div id="adminTab-identitas" class="admin-tab-content">
+                        <form onsubmit="saveExamSettings(event)">
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label class="form-label">Nama Sekolah</label>
+                                    <input type="text" id="setSchool" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Nama Guru Pengampu</label>
+                                    <input type="text" id="setTeacher" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Mata Pelajaran</label>
+                                    <input type="text" id="setSubject" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Kelas / Fase</label>
+                                    <input type="text" id="setClass" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Tahun Pelajaran</label>
+                                    <input type="text" id="setYear" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Tanggal Pelaksanaan</label>
+                                    <input type="text" id="setExamDate" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Durasi Ujian (Menit)</label>
+                                    <input type="number" id="setDuration" class="form-control" min="10" max="240" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Bobot Pilihan Ganda (%)</label>
+                                    <input type="number" id="setWeightPG" class="form-control" min="0" max="100" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Bobot Essay (%)</label>
+                                    <input type="number" id="setWeightEssay" class="form-control" min="0" max="100" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Ganti Kata Sandi Admin</label>
+                                    <input type="text" id="setAdminPass" class="form-control" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">💾 Simpan Pengaturan Ujian</button>
+                        </form>
+                    </div>
+
+                    <!-- Tab 2: Bank Soal & Edit Soal -->
+                    <div id="adminTab-banksoal" class="admin-tab-content" style="display:none;">
+                        <div style="margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                            <span style="font-size:0.9rem; color:var(--text-muted);">Total: <strong>35 Soal</strong> (30 Pilihan Ganda & 5 Essay) sesuai 6 Tujuan Pembelajaran.</span>
+                            <button class="btn btn-outline btn-sm" onclick="resetDefaultQuestions()">🔄 Kembalikan Soal Bawaan</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Bentuk</th>
+                                        <th>Level</th>
+                                        <th>TP</th>
+                                        <th>Pertanyaan</th>
+                                        <th>Kunci / Skor Maks</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminQuestionsBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Kisi-Kisi Otomatis -->
+                    <div id="adminTab-kisikisi" class="admin-tab-content" style="display:none;">
+                        <div style="margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center;">
+                            <h4 style="font-size:1rem;">Matriks Kisi-Kisi SAS Ganjil 2026/2027</h4>
+                            <button class="btn btn-secondary btn-sm" onclick="printKisiKisi()">🖨️ Cetak Kisi-Kisi</button>
+                        </div>
+                        <div class="table-responsive" id="kisiKisiTableContainer"></div>
+                    </div>
+
+                    <!-- Tab 4: Kelola Peserta & Reset -->
+                    <div id="adminTab-peserta" class="admin-tab-content" style="display:none;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem;">
+                            <p style="font-size:0.9rem;">Kelola peserta yang telah ujian. Hapus data peserta jika mengizinkan ujian ulang.</p>
+                            <button class="btn btn-danger btn-sm" onclick="confirmResetAllResults()">🗑️ Hapus Semua Hasil Ujian</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>No. Peserta</th>
+                                        <th>Nama</th>
+                                        <th>Kelas</th>
+                                        <th>Nilai Akhir</th>
+                                        <th>Pelanggaran Tab</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminParticipantsBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 5: Backup & Restore -->
+                    <div id="adminTab-backup" class="admin-tab-content" style="display:none;">
+                        <div class="grid-2">
+                            <div style="background:#f8fafc; padding:1.25rem; border-radius:10px; border:1px solid var(--border-color);">
+                                <h4 style="margin-bottom:0.5rem;">📤 Backup Seluruh Database (JSON)</h4>
+                                <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1rem;">
+                                    Unduh seluruh data pengaturan, bank soal, dan hasil ujian peserta ke dalam satu file cadangan (.json) untuk dipindahkan ke komputer guru.
+                                </p>
+                                <button class="btn btn-primary" onclick="backupDatabaseJSON()">⬇️ Unduh File Backup (.json)</button>
+                            </div>
+
+                            <div style="background:#f8fafc; padding:1.25rem; border-radius:10px; border:1px solid var(--border-color);">
+                                <h4 style="margin-bottom:0.5rem;">📥 Restore / Gabung Data Hasil Ujian</h4>
+                                <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1rem;">
+                                    Impor file backup (.json) dari perangkat siswa untuk menggabungkan rekap nilai ke komputer utama guru.
+                                </p>
+                                <input type="file" id="restoreFileInput" accept=".json" class="form-control" style="margin-bottom:0.75rem;">
+                                <button class="btn btn-secondary" onclick="restoreDatabaseJSON()">⬆️ Impor & Gabungkan Data</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ======================================================================
+         AREA KHUSUS CETAK (TERSEMBUNYI SAAT NORMAL)
+         ====================================================================== -->
+    <div id="printArea"></div>
+
+    <!-- ======================================================================
+         LAYAR PENGUNCIAN PELANGGARAN UJIAN (LOCKDOWN + ALARM)
+         ====================================================================== -->
+    <div id="examLockdownOverlay" class="lockdown-overlay">
+        <div class="lockdown-card">
+            <div style="font-size:3.25rem; line-height:1; margin-bottom:0.65rem;">🚨</div>
+            <h2 style="color:#b91c1c; font-size:1.45rem; font-weight:800; margin-bottom:0.4rem;">
+                LAYAR UJIAN TERKUNCI!
+            </h2>
+            <span class="badge badge-red" style="margin-bottom:0.9rem; font-size:0.82rem;">
+                PELANGGARAN INTEGRITAS UJIAN TERDETEKSI
+            </span>
+            <p style="font-size:0.93rem; color:var(--text-main); margin-bottom:0.65rem;">
+                Peserta atas nama <strong id="lockdownStudentName">-</strong> terdeteksi meninggalkan layar/tab ujian sebanyak
+                <strong id="lockdownViolationCount" style="color:#dc2626; font-size:1.05rem;">2 kali</strong>.
+            </p>
+            <p style="font-size:0.85rem; color:var(--text-muted); background:#fef2f2; border:1px solid #fecaca; padding:0.65rem; border-radius:8px; margin-bottom:1.1rem;">
+                Jawaban terakhir Anda telah diamankan otomatis. Silakan lapor kepada <strong>Guru / Pengawas Ujian</strong> untuk membuka kunci layar menggunakan PIN/Sandi Pengawas.
+            </p>
+            <form onsubmit="unlockExamWithPin(event)" style="text-align:left;">
+                <div class="form-group" style="margin-bottom:0.75rem;">
+                    <label class="form-label" for="lockdownPinInput" style="color:#991b1b;">PIN / Kata Sandi Pengawas:</label>
+                    <input type="password" id="lockdownPinInput" class="form-control" placeholder="Masukkan PIN / Sandi Pengawas..." required autocomplete="off">
+                    <div id="lockdownErrorMsg" style="display:none; color:#dc2626; font-size:0.82rem; font-weight:700; margin-top:0.35rem;">
+                        ❌ PIN / Sandi Pengawas salah!
+                    </div>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="triggerAlarmBurst()">🔊 Tes Bunyi Alarm</button>
+                    <button type="submit" class="btn btn-danger" style="flex:1.4;">🔓 Buka Kunci Ujian</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ======================================================================
+         MODAL DIALOG UNIVERSAL (PENGGANTI ALERT & CONFIRM)
+         ====================================================================== -->
+    <div id="appModal" class="modal-backdrop">
+        <div class="modal-dialog" id="appModalDialog">
+            <div class="card-header">
+                <h3 class="card-title" id="modalTitle">Informasi</h3>
+                <button class="btn btn-sm btn-outline" onclick="closeModal()">✕</button>
+            </div>
+            <div id="modalBody" style="margin-bottom:1.25rem; font-size:0.95rem;"></div>
+            <div id="modalFooter" style="display:flex; justify-content:flex-end; gap:0.6rem;"></div>
+        </div>
+    </div>
+
+    <footer class="no-print">
+        <strong>SMK Waliwa Laimu</strong> • Sistem Asesmen Sumatif Akhir Semester Ganjil 2026/2027 • Mata Pelajaran Manajemen Kualitas Air Harian (Guru: Muh. Kasim Wattimena, S.Pd., Gr.)
+    </footer>
+
+    <!-- ======================================================================
+         LOGIKA JAVASCRIPT LENGKAP (DATABASE OFFLINE, 35 SOAL, CBT, PENILAIAN)
+         ====================================================================== -->
+    <script>
+        /**
+         * 1. ENAM TUJUAN PEMBELAJARAN (TP) KURIKULUM MERDEKA FASE F
+         */
+        const LEARNING_OBJECTIVES = {
+            TP1: "Mengidentifikasi karakteristik media budidaya air tawar, payau, dan laut serta hubungan keseimbangan ekosistem perairan terhadap nafsu makan, tingkat stres, dan Survival Rate (SR) komoditas.",
+            TP2: "Menganalisis potensi bahaya dan menerapkan prosedur Keselamatan dan Kesehatan Kerja serta Lingkungan Hidup (K3LH) selama pengelolaan kualitas air harian.",
+            TP3: "Melaksanakan prosedur biosekuriti harian, termasuk pembersihan, sterilisasi alat ukur dan wadah sampel, serta pencegahan kontaminasi silang.",
+            TP4: "Menentukan titik, kedalaman, dan waktu pengambilan sampel air yang representatif serta melakukan penanganan dan pengawetan sementara sampel.",
+            TP5: "Melakukan kalibrasi dasar, mengoperasikan alat ukur parameter fisika (suhu, kecerahan/kekeruhan, warna, dan bau air), serta membaca hasilnya secara akurat.",
+            TP6: "Mengukur parameter kimia dasar (pH, DO, salinitas, alkalinitas/kesadahan, amonia/nitrit/nitrat sesuai ketersediaan alat atau test kit) dan mengamati indikator biologi sederhana secara teliti dan aman."
+        };
+
+        /**
+         * 2. BANK SOAL DEFAULT (TEPAT 35 SOAL: 30 PG & 5 ESSAY)
+         * Distribusi PG:
+         * - No 1-12: Level 1 (Pengetahuan/Pemahaman)
+         * - No 13-22: Level 2 (Penerapan/Aplikasi)
+         * - No 23-30: Level 3 (Penalaran/HOTS)
+         * Distribusi Essay:
+         * - No 31-32 (Essay 1-2): Level 1
+         * - No 33-34 (Essay 3-4): Level 2
+         * - No 35 (Essay 5): Level 3
+         */
+        const DEFAULT_QUESTIONS = [
+            // --- LEVEL 1 PILIHAN GANDA (NOMOR 1 - 12) ---
+            {
+                id: 1, type: 'PG', level: 'L1', tp: 'TP1',
+                materi: 'Karakteristik Media Budidaya Perairan',
+                indikator: 'Peserta didik dapat membedakan rentang salinitas media budidaya air tawar, payau, dan laut.',
+                question: 'Dalam kegiatan budidaya perikanan, media air diklasifikasikan berdasarkan kadar garam terlarut (salinitas). Rentang salinitas yang menjadi karakteristik khas perairan payau untuk budidaya udang vaname atau bandeng adalah...',
+                options: [
+                    '0 – 0,5 ppt',
+                    '0,5 – 30 ppt',
+                    '30 – 40 ppt',
+                    '45 – 60 ppt',
+                    'Di atas 65 ppt'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 2, type: 'PG', level: 'L1', tp: 'TP1',
+                materi: 'Keseimbangan Ekosistem & Survival Rate (SR)',
+                indikator: 'Peserta didik dapat menjelaskan pengaruh penurunan kualitas air terhadap fisiologi dan Survival Rate (SR) ikan.',
+                question: 'Penurunan drastis kualitas air pada kolam budidaya secara langsung memicu respons stres pada ikan karena energi metabolisme dialihkan untuk mempertahankan homeostasis. Dampak lanjutan dari kondisi stres kronis ini terhadap performa budidaya adalah...',
+                options: [
+                    'Meningkatnya efisiensi konversi pakan (FCR menjadi sangat rendah)',
+                    'Meningkatnya nafsu makan dan laju pertumbuhan harian',
+                    'Menurunnya nafsu makan, melemahnya sistem imun, dan turunnya Survival Rate (SR)',
+                    'Bertambahnya kadar oksigen terlarut secara alami di dasar kolam',
+                    'Percepatan proses osmoregulasi tanpa membutuhkan energi'
+                ],
+                answer: 2 // C
+            },
+            {
+                id: 3, type: 'PG', level: 'L1', tp: 'TP2',
+                materi: 'Potensi Bahaya Pengelolaan Kualitas Air',
+                indikator: 'Peserta didik dapat mengidentifikasi potensi bahaya fisik dan kimia saat pengukuran kualitas air harian.',
+                question: 'Pada saat teknisi budidaya melakukan pengambilan sampel air di pematang kolam terpal maupun tambak intensif pada pagi hari, potensi bahaya fisik yang paling sering terjadi dan wajib diantisipasi adalah...',
+                options: [
+                    'Radiasi sinar ultraviolet berlebih',
+                    'Terpeleset pada permukaan pematang yang licin dan jatuh ke dalam kolam',
+                    'Keracunan gas karbon monoksida dari aerator',
+                    'Kebisingan mesin pakan otomatis di atas 120 dB',
+                    'Luka bakar akibat paparan air bersalinitas tinggi'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 4, type: 'PG', level: 'L1', tp: 'TP2',
+                materi: 'Alat Pelindung Diri (APD) K3LH',
+                indikator: 'Peserta didik dapat menyebutkan fungsi APD saat menggunakan reagen kimia test kit kualitas air.',
+                question: 'Saat melakukan pengujian parameter amonia atau nitrit menggunakan reagen cair (test kit) yang bersifat korosif dan iritan, alat pelindung diri (APD) utama yang wajib digunakan oleh siswa adalah...',
+                options: [
+                    'Pelindung telinga (earmuff) dan sepatu bot',
+                    'Sarung tangan nitril/lateks dan kacamata pelindung (safety goggles)',
+                    'Masker kain biasa dan topi lapangan',
+                    'Rompi pelampung dan helm proyek',
+                    'Apron las dan sarung tangan kulit tebal'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 5, type: 'PG', level: 'L1', tp: 'TP3',
+                materi: 'Biosekuriti Peralatan Kualitas Air',
+                indikator: 'Peserta didik dapat menjelaskan tujuan sanitasi dan sterilisasi alat ukur kualitas air antarpetak kolam.',
+                question: 'Tujuan utama dilakukannya pencucian dan sterilisasi sensor alat ukur (seperti probe DO meter dan pH meter) sebelum berpindah dari satu kolam ke kolam lainnya adalah...',
+                options: [
+                    'Mempercepat daya hantar listrik baterai pada alat ukur',
+                    'Mencegah terjadinya kontaminasi silang (cross-contamination) patogen antarunit budidaya',
+                    'Menaikkan suhu air pada kolam berikutnya',
+                    'Mengubah nilai kalibrasi standar pabrik agar lebih tinggi',
+                    'Menghemat penggunaan larutan penyangga (buffer)'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 6, type: 'PG', level: 'L1', tp: 'TP3',
+                materi: 'Bahan Desinfektan Biosekuriti Harian',
+                indikator: 'Peserta didik dapat mengidentifikasi bahan sanitasi yang aman untuk wadah sampel dan alat ukur.',
+                question: 'Bahan sanitasi yang umum digunakan untuk menyeka bagian luar wadah botol sampel dan mensterilkan peralatan non-logam dalam prosedur biosekuriti harian di unit pembenihan adalah...',
+                options: [
+                    'Minyak tanah murni',
+                    'Alkohol 70% atau larutan klorin dosis terukur yang dibilas bersih',
+                    'Asam sulfat pekat tanpa pengenceran',
+                    'Oli bekas mesin diesel',
+                    'Pupuk urea cair'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 7, type: 'PG', level: 'L1', tp: 'TP4',
+                materi: 'Sampel Air Representatif',
+                indikator: 'Peserta didik dapat menjelaskan pengertian sampel air yang representatif.',
+                question: 'Dalam pemantauan kualitas air harian, sampel air yang diambil harus bersifat "representatif", yang artinya adalah...',
+                options: [
+                    'Sampel diambil hanya dari air yang mengalir di saluran pembuangan',
+                    'Sampel mampu mewakili kondisi kualitas air secara keseluruhan pada petak budidaya tersebut',
+                    'Sampel diambil dalam volume minimal 20 liter setiap titik',
+                    'Sampel harus berwarna jernih dan bebas dari plankton',
+                    'Sampel hanya diambil satu kali selama satu siklus pemeliharaan'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 8, type: 'PG', level: 'L1', tp: 'TP4',
+                materi: 'Penanganan dan Pengawetan Sementara Sampel',
+                indikator: 'Peserta didik dapat menyebutkan cara penyimpanan sementara sampel air sebelum dianalisis di laboratorium.',
+                question: 'Apabila sampel air tambak tidak dapat langsung diuji di lokasi dan harus dibawa ke laboratorium sekolah dalam waktu 3 jam, tindakan penanganan sementara yang paling tepat agar parameter tidak berubah drastis adalah...',
+                options: [
+                    'Menjemur botol sampel di bawah sinar matahari langsung',
+                    'Menyimpan botol sampel tertutup rapat dalam coolbox bersuhu sekitar 4°C',
+                    'Menambahkan gula pasir ke dalam botol sampel',
+                    'Mengocok botol sampel terus-menerus dengan tutup terbuka',
+                    'Memanaskan sampel air hingga mendidih terlebih dahulu'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 9, type: 'PG', level: 'L1', tp: 'TP5',
+                materi: 'Alat Ukur Parameter Fisika Air',
+                indikator: 'Peserta didik dapat mengidentifikasi alat ukur kecerahan air budidaya dan bagiannya.',
+                question: 'Alat sederhana berbentuk piringan bulat berwarna hitam dan putih berselang-seling yang dilengkapi tali berskala untuk mengukur tingkat kecerahan perairan kolam/tambak disebut...',
+                options: [
+                    'Refraktometer',
+                    'Secchi disk (Keping Secchi)',
+                    'pH pen meter',
+                    'Turbidimeter digital',
+                    'Barometer'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 10, type: 'PG', level: 'L1', tp: 'TP5',
+                materi: 'Indikator Warna dan Bau Air Budidaya',
+                indikator: 'Peserta didik dapat mengartikan makna bau busuk (telur busuk) pada air kolam.',
+                question: 'Pada saat pengecekan organoleptik harian, air dasar kolam mengeluarkan bau menyengat seperti telur busuk. Bau tersebut mengindikasikan adanya akumulasi gas beracun hasil dekomposisi anaerob bahan organik, yaitu...',
+                options: [
+                    'Oksigen murni (O2)',
+                    'Nitrogen bebas (N2)',
+                    'Hidrogen sulfida (H2S)',
+                    'Karbon dioksida (CO2)',
+                    'Ozon (O3)'
+                ],
+                answer: 2 // C
+            },
+            {
+                id: 11, type: 'PG', level: 'L1', tp: 'TP6',
+                materi: 'Parameter Kimia Dasar Air (pH dan DO)',
+                indikator: 'Peserta didik dapat menyebutkan rentang pH optimal untuk sebagian besar komoditas ikan air tawar dan payau.',
+                question: 'Rentang derajat keasaman (pH) air yang ideal untuk mendukung pertumbuhan optimal dan kelangsungan hidup sebagian besar komoditas ikan konsumsi air tawar maupun payau adalah...',
+                options: [
+                    '3,5 – 4,5',
+                    '5,0 – 5,8',
+                    '6,5 – 8,5',
+                    '9,5 – 10,5',
+                    '11,0 – 12,5'
+                ],
+                answer: 2 // C
+            },
+            {
+                id: 12, type: 'PG', level: 'L1', tp: 'TP6',
+                materi: 'Indikator Biologi Sederhana Kualitas Air',
+                indikator: 'Peserta didik dapat mengenali tanda biologi sederhana ketika kolam mengalami kekurangan oksigen terlarut.',
+                question: 'Pengamatan indikator biologi harian pada pagi hari menunjukkan ikan-ikan berenang ke permukaan kolam sambil membuka-tutup mulutnya secara cepat (megap-megap/piping). Perilaku tersebut menandakan bahwa perairan mengalami...',
+                options: [
+                    'Kelebihan kadar oksigen terlarut (supersaturasi)',
+                    'Kekurangan kadar oksigen terlarut (hipoksia / DO rendah)',
+                    'Penurunan suhu air secara perlahan',
+                    'Kepadatan fitoplankton jenis diatom yang seimbang',
+                    'Kadar alkalinitas air yang sangat stabil'
+                ],
+                answer: 1 // B
+            },
+
+            // --- LEVEL 2 PENERAPAN / APLIKASI (NOMOR 13 - 22) ---
+            {
+                id: 13, type: 'PG', level: 'L2', tp: 'TP1',
+                materi: 'Pengelolaan Media Budidaya & Keseimbangan Ekosistem',
+                indikator: 'Peserta didik dapat menerapkan tindakan pengelolaan media air ketika terjadi hujan deras pada tambak.',
+                question: 'Hujan lebat turun selama 4 jam di area tambak budidaya udang/bandeng sehingga lapisan air tawar menumpuk di permukaan (stratifikasi salinitas dan penurunan pH). Tindakan operasional harian yang paling tepat diterapkan teknisi untuk memulihkan keseimbangan media adalah...',
+                options: [
+                    'Mematikan seluruh kincir air agar air hujan tidak tercampur dengan air dasar',
+                    'Membuang lapisan air permukaan melalui pintu air atas (monik) dan menyalakan kincir untuk homogenisasi',
+                    'Menambah dosis pemberian pakan pelet hingga 2 kali lipat',
+                    'Menutup permukaan tambak dengan terpal hitam selama 3 hari',
+                    'Menambahkan garam krosok sebanyak 10 ton secara mendadak dalam 5 menit'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 14, type: 'PG', level: 'L2', tp: 'TP2',
+                materi: 'Penerapan Prosedur K3LH Pengukuran Listrik & Air',
+                indikator: 'Peserta didik dapat menerapkan prosedur keselamatan kerja saat mengukur kualitas air di dekat instalasi kincir listrik.',
+                question: 'Seorang siswa ditugaskan mengukur oksigen terlarut (DO) pada kolam intensif yang menggunakan kincir listrik 3 phase. Sebelum mencelupkan tangan atau probe ke dalam air, langkah K3LH wajib yang harus dilakukan adalah...',
+                options: [
+                    'Melepas sepatu bot agar kaki dapat merasakan getaran arus listrik',
+                    'Memeriksa isolasi kabel kincir di sekitar titik sampling dan memastikan tidak ada kebocoran arus listrik',
+                    'Berdiri di atas rangka besi kincir yang sedang berputar',
+                    'Mencelupkan alat ukur non-waterproof secara keseluruhan ke dasar kolam',
+                    'Menggunakan kabel sambungan listrik terbuka di atas pematang basah'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 15, type: 'PG', level: 'L2', tp: 'TP3',
+                materi: 'Prosedur Biosekuriti Alat Ukur Lapangan',
+                indikator: 'Peserta didik dapat mengurutkan langkah biosekuriti alat ukur setelah digunakan di kolam yang terindikasi penyakit.',
+                question: 'Setelah mengukur parameter air pada Kolam B yang ikannya menunjukkan gejala bercak merah (Aeromonas), teknisi akan melanjutkan pengukuran ke Kolam C yang sehat. Urutan prosedur biosekuriti yang benar adalah...',
+                options: [
+                    'Langsung mencelupkan probe ke Kolam C tanpa dibilas agar hemat waktu',
+                    'Membilas probe dengan air bersih, menyemprotkan/merendam dalam desinfektan sesuai anjuran alat, membilas dengan akuades, lalu mengeringkannya dengan tisu lembut',
+                    'Menyikat membran sensor DO dengan sikat kawat dan detergen bubuk',
+                    'Merendam seluruh bodi digital alat ukur ke dalam larutan kaporit pekat selama 1 jam',
+                    'Mengelap probe menggunakan kain lap bekas pakan ikan'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 16, type: 'PG', level: 'L2', tp: 'TP4',
+                materi: 'Penentuan Titik dan Kedalaman Sampling Air',
+                indikator: 'Peserta didik dapat menentukan titik dan kedalaman pengambilan sampel air yang tepat pada kolam pemeliharaan.',
+                question: 'Untuk mendapatkan data kualitas air yang mewakili zona hidup utama ikan nila pada kolam berukuran 20 m × 10 m dengan kedalaman air 120 cm, titik dan kedalaman pengambilan sampel yang paling tepat adalah...',
+                options: [
+                    'Tepat di bawah pipa pemasukan air (inlet) pada kedalaman 5 cm',
+                    'Di sudut mati pematang dengan mengambil lumpur dasar kolam',
+                    'Di beberapa titik diagonal/tengah kolam pada kedalaman sekitar 30–50 cm dari permukaan',
+                    'Hanya di saluran pembuangan (outlet) saat air sedang disurutkan',
+                    'Di lapisan buih permukaan setebal 2 cm di pinggir pematang'
+                ],
+                answer: 2 // C
+            },
+            {
+                id: 17, type: 'PG', level: 'L2', tp: 'TP4',
+                materi: 'Penentuan Waktu Pengambilan Sampel Harian',
+                indikator: 'Peserta didik dapat menentukan waktu pengukuran DO dan pH untuk memantau fluktuasi harian.',
+                question: 'Dalam manajemen kualitas air harian, pengukuran oksigen terlarut (DO) dan pH dilakukan dua kali sehari pada waktu kritis fluktuasi, yaitu...',
+                options: [
+                    'Pukul 10.00 pagi dan pukul 22.00 malam',
+                    'Pukul 05.30–06.30 pagi (sebelum matahari terbit) dan pukul 14.00–15.00 siang',
+                    'Pukul 12.00 siang dan pukul 24.00 tengah malam',
+                    'Pukul 08.00 pagi dan pukul 18.00 sore',
+                    'Kapan saja secara acak tanpa jadwal tetap'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 18, type: 'PG', level: 'L2', tp: 'TP5',
+                materi: 'Kalibrasi Dasar Alat Ukur Fisika/Optik',
+                indikator: 'Peserta didik dapat menerapkan langkah kalibrasi nol (zero calibration) pada refraktometer.',
+                question: 'Sebelum menggunakan refraktometer untuk mengukur salinitas air tambak, siswa melakukan kalibrasi dasar. Langkah kalibrasi yang benar adalah...',
+                options: [
+                    'Meneteskan air laut pekat pada prisma lalu memutar sekrup kalibrasi ke angka 35 ppt',
+                    'Meneteskan 1–2 tetes akuades (air suling) pada prisma, menutup daylight plate, dan memutar sekrup kalibrasi hingga garis batas biru-putih tepat di angka 0 ppt',
+                    'Merendam seluruh refraktometer ke dalam air hangat bersuhu 60°C',
+                    'Menggosok kaca prisma dengan amplas halus sebelum ditetesi sampel',
+                    'Mengarahkan refraktometer ke ruangan gelap gulita tanpa sumber cahaya'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 19, type: 'PG', level: 'L2', tp: 'TP5',
+                materi: 'Pengoperasian dan Pembacaan Secchi Disk',
+                indikator: 'Peserta didik dapat menghitung nilai kecerahan air dari hasil pembacaan Secchi disk.',
+                question: 'Saat menurunkan keping Secchi ke dalam kolam, batas warna hitam-putih tepat tidak terlihat lagi pada kedalaman 32 cm. Kemudian keping ditarik perlahan ke atas hingga tepat terlihat kembali pada kedalaman 28 cm. Berapakah nilai kecerahan perairan kolam tersebut?',
+                options: [
+                    '4 cm',
+                    '28 cm',
+                    '30 cm',
+                    '32 cm',
+                    '60 cm'
+                ],
+                answer: 2 // C ((32 + 28) / 2 = 30 cm)
+            },
+            {
+                id: 20, type: 'PG', level: 'L2', tp: 'TP6',
+                materi: 'Kalibrasi dan Pengukuran pH Meter Digital',
+                indikator: 'Peserta didik dapat menerapkan prosedur kalibrasi dua titik pada pH meter digital.',
+                question: 'Hasil pembacaan pH meter digital pada kolam budidaya terasa tidak stabil. Untuk melakukan kalibrasi dua titik pada media air payau/alkalis, larutan penyangga (buffer solution) standar yang digunakan secara berurutan adalah...',
+                options: [
+                    'Buffer pH 2,00 dan pH 3,00',
+                    'Buffer pH 7,00 (netral) terlebih dahulu, kemudian buffer pH 10,01 (atau pH 4,01 sesuai rentang)',
+                    'Akuades dan larutan garam dapur 10%',
+                    'Alkohol 70% dan cairan pemutih',
+                    'Air kolam tetangga yang berwarna hijau pekat'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 21, type: 'PG', level: 'L2', tp: 'TP6',
+                materi: 'Pengukuran Amonia Menggunakan Test Kit',
+                indikator: 'Peserta didik dapat menerapkan prosedur pembacaan warna pada test kit kimia air dengan tepat.',
+                question: 'Pada pengujian Total Ammonia Nitrogen (TAN) menggunakan colorimetric test kit, setelah meneteskan reagen A dan B serta menunggu waktu reaksi sesuai petunjuk (5 menit), cara membandingkan warna sampel yang benar adalah...',
+                options: [
+                    'Meletakkan tabung reaksi di atas kartu warna di tempat terang (cahaya alami tidak langsung) dan melihat dari atas/samping sesuai instruksi kit',
+                    'Melihat tabung reaksi di dalam ruangan tertutup tanpa lampu',
+                    'Membandingkan warna tabung sebelum waktu reaksi selesai (detik ke-10)',
+                    'Mengencerkan sampel dengan air keran sebanyak 5 kali sebelum dibaca',
+                    'Mencium aroma cairan di dalam tabung reaksi secara langsung'
+                ],
+                answer: 0 // A
+            },
+            {
+                id: 22, type: 'PG', level: 'L2', tp: 'TP6',
+                materi: 'Aplikasi Pengamatan Plankton sebagai Indikator Biologi',
+                indikator: 'Peserta didik dapat menghubungkan warna air hijau cerah dengan dominasi fitoplankton menguntungkan.',
+                question: 'Pengamatan visual dan mikroskopis sederhana pada kolam pembesaran menunjukkan warna air hijau cerah (seperti pucuk daun pisang) dengan kecerahan 35 cm. Kondisi biologi perairan tersebut menunjukkan dominasi...',
+                options: [
+                    'Bakteri patogen Vibrio harveyi',
+                    'Fitoplankton jenis Chlorophyta (seperti Chlorella sp.) yang baik untuk stabilitas oksigen dan ekosistem',
+                    'Dinoflagellata beracun penyebab red tide',
+                    'Sisa pakan membusuk yang tersuspensi penuh',
+                    'Jamur air Saprolegnia sp.'
+                ],
+                answer: 1 // B
+            },
+
+            // --- LEVEL 3 PENALARAN / HOTS (NOMOR 23 - 30) ---
+            {
+                id: 23, type: 'PG', level: 'L3', tp: 'TP1',
+                materi: 'Analisis Studi Kasus Keseimbangan Ekosistem & SR',
+                indikator: 'Peserta didik dapat menganalisis penyebab kematian massal ikan di pagi hari berdasarkan dinamika ekosistem kolam.',
+                question: 'Sebuah kolam budidaya ikan nila padat tebar memiliki warna air hijau sangat pekat (blooming plankton) dengan kecerahan hanya 12 cm. Selama 3 hari berturut-turut cuaca mendung tanpa sinar matahari. Pada hari ke-4 pukul 05.30 pagi, ditemukan banyak ikan mati mengambang dengan operkulum terbuka lebar. Analisis penyebab paling logis dari kejadian tersebut adalah...',
+                options: [
+                    'Suhu air meningkat drastis hingga 38°C akibat cuaca mendung sehingga ikan kepanasan',
+                    'Fotosintesis fitoplankton terhenti karena kurang cahaya, sementara respirasi massal plankton dan ikan menguras habis oksigen terlarut pada malam hingga dini hari',
+                    'Kadar salinitas air tawar berubah menjadi 35 ppt akibat penguapan tinggi',
+                    'Ikan mengalami keracunan oksigen murni yang dihasilkan plankton saat mendung',
+                    'pH air melonjak hingga angka 11,5 karena tidak ada sinar matahari'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 24, type: 'PG', level: 'L3', tp: 'TP2',
+                materi: 'Evaluasi Risiko K3LH & Pencemaran Lingkungan',
+                indikator: 'Peserta didik dapat mengevaluasi dampak pembuangan limbah pengujian kimia dan air ganti kolam terhadap lingkungan.',
+                question: 'Setelah selesai melakukan uji kimia kualitas air (amonia, nitrit, dan kesadahan) terhadap 15 sampel kolam, beberapa siswa berencana membuang sisa cairan tabung reaksi langsung ke saluran inlet kolam pembenihan karena jumlahnya sedikit. Keputusan evaluasi K3LH yang paling tepat adalah...',
+                options: [
+                    'Memperbolehkan karena volume reagen hanya beberapa mililiter dan akan terencerkan otomatis',
+                    'Melarang keras karena reagen test kit mengandung bahan kimia toksik/logam berat yang dapat meracuni larva ikan dan mencemari lingkungan; limbah harus ditampung pada jeriken limbah B3 khusus',
+                    'Membuangnya ke kolam pembesaran ikan lele karena lele tahan terhadap segala bahan kimia',
+                    'Menyiramkannya ke tanaman sayuran hidroponik di sekitar sekolah',
+                    'Menguapkannya di atas kompor di dalam ruang kelas'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 25, type: 'PG', level: 'L3', tp: 'TP3',
+                materi: 'Analisis Kegagalan Biosekuriti Harian',
+                indikator: 'Peserta didik dapat mendiagnosis jalur penularan penyakit akibat kelalaian biosekuriti peralatan.',
+                question: 'Pada unit pembenihan ikan kerapu/kakap, Bak A terserang parasit Trichodina sp., sedangkan Bak B, C, dan D awalnya sehat. Dua hari kemudian, seluruh bak ikut terinfeksi meskipun sumber air pasok telah melewati filter UV dan ozon. Setelah ditelusuri, petugas harian menggunakan ember sampel dan termometer yang sama secara bergantian tanpa pencelupan desinfektan. Kesimpulan analisis biosekuriti yang paling tepat adalah...',
+                options: [
+                    'Filter UV dan ozon pada saluran pasok tidak berfungsi sama sekali',
+                    'Terjadi kontaminasi silang (horizontal transmission) melalui peralatan sampling dan ukur yang tidak disterilkan antarbak',
+                    'Parasit Trichodina sp. berpindah melalui udara akibat kipas angin ruangan',
+                    'Pakan pelet kering membawa parasit hidup ke dalam semua bak secara bersamaan',
+                    'Suhu air yang stabil memicu mutasi genetik ikan menjadi berparasit'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 26, type: 'PG', level: 'L3', tp: 'TP4',
+                materi: 'Evaluasi Validitas Data & Teknik Sampling',
+                indikator: 'Peserta didik dapat menganalisis penyebab ketidaksesuaian data laboratorium dengan kondisi aktual kolam.',
+                question: 'Seorang teknisi mengambil sampel air tambak pada pukul 06.00 pagi untuk uji DO dan pH. Sampel dimasukkan ke dalam botol mineral bekas dengan menyisakan ruang udara 30% di bagian atas, lalu diletakkan di bak mobil terbuka selama 2 jam perjalanan menuju laboratorium. Hasil uji lab menunjukkan DO = 6,8 mg/L, padahal di tambak udang terlihat naik ke permukaan. Mengapa data laboratorium tersebut tidak valid?',
+                options: [
+                    'Waktu pengambilan pukul 06.00 pagi terlalu cepat untuk mengukur DO',
+                    'Adanya ruang udara dan guncangan selama perjalanan menyebabkan difusi oksigen dari udara ke dalam sampel air sehingga nilai DO meningkat semu',
+                    'Botol plastik menyerap seluruh gas karbon dioksida dalam waktu 2 jam',
+                    'Suhu panas di bak mobil meningkatkan kelarutan oksigen dalam air',
+                    'Udang naik ke permukaan karena menyukai cahaya matahari pagi'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 27, type: 'PG', level: 'L3', tp: 'TP5',
+                materi: 'Analisis Kombinasi Parameter Fisika (Suhu & Kekeruhan)',
+                indikator: 'Peserta didik dapat menganalisis keterkaitan peningkatan suhu dan kekeruhan abiotik terhadap kondisi kolam.',
+                question: 'Pada musim kemarau, suhu air kolam dangkal (kedalaman 70 cm) meningkat dari 28°C menjadi 33,5°C pada siang hari, disertai kekeruhan tinggi berwarna kecokelatan akibat partikel tanah liat yang tersuspensi. Kombinasi dampak fisika-kimia yang terjadi pada ekosistem kolam tersebut adalah...',
+                options: [
+                    'Kelarutan oksigen dalam air meningkat tajam dan penetrasi cahaya untuk fotosintesis menjadi maksimal',
+                    'Kelarutan oksigen dalam air menurun akibat suhu tinggi, laju metabolisme ikan meningkat, dan penetrasi cahaya terhambat partikel lumpur',
+                    'Laju metabolisme ikan melambat sehingga kebutuhan oksigen berkurang hingga 50%',
+                    'Partikel tanah liat menghasilkan oksigen terlarut melalui reaksi kimia dengan sinar UV',
+                    'Suhu 33,5°C mensterilkan kolam dari seluruh bakteri pengurai'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 28, type: 'PG', level: 'L3', tp: 'TP6',
+                materi: 'Analisis Toksisitas Amonia (NH3) Berdasarkan pH dan Suhu',
+                indikator: 'Peserta didik dapat menganalisis tingkat bahaya amonia tak terionisasi (NH3) saat terjadi lonjakan pH siang hari.',
+                question: 'Hasil pengukuran kualitas air kolam pada pukul 14.30 siang menunjukkan: Total Ammonia Nitrogen (TAN) = 1,5 mg/L, suhu = 31°C, dan pH = 9,1. Pada pagi hari pukul 06.00 dengan nilai TAN yang sama (1,5 mg/L), pH tercatat 7,4 dan ikan tampak normal, namun pada siang hari ikan mulai gelisah dan keracunan. Penjelasan ilmiah yang paling tepat adalah...',
+                options: [
+                    'Pada pH tinggi (9,1) dan suhu hangat, kesetimbangan amonia bergeser membentuk fraksi amonia tak terionisasi (NH3) yang jauh lebih beracun bagi insang ikan dibandingkan ion amonium (NH4+)',
+                    'Pada pH 7,4 seluruh amonia menguap ke atmosfer sehingga tidak berbahaya di pagi hari',
+                    'Ion amonium (NH4+) hanya terbentuk apabila pH air berada di atas angka 9,0',
+                    'Suhu 31°C mengubah amonia menjadi gas oksigen yang merusak insang',
+                    'Test kit amonia mengalami kerusakan sensor setiap pukul 14.30 siang'
+                ],
+                answer: 0 // A
+            },
+            {
+                id: 29, type: 'PG', level: 'L3', tp: 'TP6',
+                materi: 'Pemecahan Masalah Fluktuasi pH & Alkalinitas Rendah',
+                indikator: 'Peserta didik dapat merumuskan solusi pengelolaan alkalinitas untuk menstabilkan fluktuasi pH harian.',
+                question: 'Data pemantauan harian menunjukkan fluktuasi pH yang sangat ekstrem: pagi hari pH = 6,4 dan sore hari pH = 9,3 (selisih 2,9 unit), disertai nilai alkalinitas total hanya 25 mg/L CaCO3. Untuk menstabilkan sistem penyangga (buffer) perairan dan menekan fluktuasi pH harian, tindakan korektif yang paling tepat dilakukan adalah...',
+                options: [
+                    'Menambahkan asam klorida encer setiap pagi hari',
+                    'Melakukan pengapuran bertahap menggunakan kapur dolomit (CaMg(CO3)2) atau kapur pertanian (CaCO3) hingga alkalinitas mencapai kisaran 80–120 mg/L',
+                    'Menguras seluruh air kolam setiap hari dan menggantinya dengan air hujan',
+                    'Menghentikan aerasi pada malam hari agar CO2 tidak terlepas',
+                    'Menebar pupuk TSP secara berlebihan ke dasar kolam'
+                ],
+                answer: 1 // B
+            },
+            {
+                id: 30, type: 'PG', level: 'L3', tp: 'TP1',
+                materi: 'Pengambilan Keputusan Terpadu Manajemen Kualitas Air',
+                indikator: 'Peserta didik dapat mengambil keputusan manajemen kualitas air terpadu berdasarkan data harian.',
+                question: 'Berdasarkan catatan logbook harian kualitas air tambak udang vaname umur 45 hari: DO pagi = 3,1 mg/L, pH pagi = 7,5, pH sore = 8,6, kecerahan = 20 cm (hijau pekat), dan nitrit = 0,8 mg/L. Sebagai calon teknisi budidaya perikanan, paket tindakan manajemen harian yang paling tepat diprioritaskan adalah...',
+                options: [
+                    'Menaikkan dosis pakan 20%, mematikan sebagian kincir untuk hemat listrik, dan memupuk tambak',
+                    'Mengoperasikan seluruh kincir secara optimal terutama malam-pagi hari, melakukan penyiponan dasar tambak, pergantian air parsial terukur, serta aplikasi probiotik pengurai bahan organik',
+                    'Menurunkan salinitas hingga 0 ppt dalam waktu 2 jam dan menghentikan pemberian pakan selama 7 hari penuh',
+                    'Menambahkan kaporit dosis tinggi langsung ke dalam tambak yang berisi udang',
+                    'Membiarkan kondisi tersebut karena nilai DO 3,1 mg/L masih tergolong sangat tinggi'
+                ],
+                answer: 1 // B
+            },
+
+            // --- SOAL ESSAY / URAIAN (NOMOR 31 - 35) ---
+            {
+                id: 31, type: 'ESSAY', level: 'L1', tp: 'TP1',
+                materi: 'Hubungan Kualitas Air dengan Nafsu Makan, Stres, dan SR',
+                indikator: 'Peserta didik dapat menjelaskan keterkaitan antara penurunan kualitas air, respons stres, nafsu makan, dan Survival Rate (SR) ikan.',
+                question: 'Jelaskan secara runtut bagaimana penurunan kualitas air harian (misalnya penurunan oksigen terlarut atau lonjakan amonia) dapat memengaruhi tingkat stres, nafsu makan, hingga menurunkan nilai Survival Rate (SR) komoditas ikan yang dibudidayakan!',
+                answerKey: '1) Penurunan kualitas air (DO rendah/amonia tinggi) mengganggu proses fisiologis dan osmoregulasi ikan sehingga memicu respons stres (pelepasan hormon kortisol). 2) Energi metabolisme ikan tersedot untuk mempertahankan diri dari stres sehingga nafsu makan menurun drastis dan pertumbuhan terhambat. 3) Stres berkepanjangan melemahkan sistem kekebalan tubuh (imunitas), membuat ikan mudah terserang patogen/penyakit dan mengalami kematian sehingga Survival Rate (SR) menurun.',
+                rubric: 'Skor 100: Menjelaskan 3 tahapan logis dengan sangat lengkap (pemicu stres -> penurunan nafsu makan/energi -> penurunan imun & SR). Skor 75: Menjelaskan 2-3 tahapan namun kurang rinci. Skor 50: Hanya menjelaskan hubungan umum tanpa alur fisiologis. Skor 25: Jawaban kurang relevan. Skor 0: Tidak menjawab.'
+            },
+            {
+                id: 32, type: 'ESSAY', level: 'L1', tp: 'TP5',
+                materi: 'Parameter Fisika Air dan Alat Ukurnya',
+                indikator: 'Peserta didik dapat menyebutkan 4 parameter fisika air beserta alat ukur/metode pengamatannya.',
+                question: 'Sebutkan dan jelaskan secara singkat 4 (empat) parameter fisika kualitas air yang wajib dipantau secara harian dalam budidaya perikanan beserta alat ukur atau cara pengamatannya!',
+                answerKey: '1) Suhu air: diukur menggunakan termometer air raksa/alkohol atau termometer digital/sensor pada DO meter. 2) Kecerahan/kekeruhan: diukur menggunakan Secchi disk (keping Secchi) untuk kecerahan atau turbidimeter untuk kekeruhan. 3) Warna air: diamati secara visual langsung terhadap kolom air (misal hijau cerah, cokelat, hijau pekat). 4) Bau air: diamati secara organoleptik (penciuman) untuk mendeteksi bau amis normal atau bau busuk H2S/amonia.',
+                rubric: 'Skor 100: Menyebutkan dan menjelaskan 4 parameter fisika beserta alat/metode ukurnya dengan tepat. Skor 75: Menyebutkan 3 parameter dengan tepat. Skor 50: Menyebutkan 2 parameter dengan tepat. Skor 25: Hanya menyebutkan 1 parameter. Skor 0: Tidak menjawab.'
+            },
+            {
+                id: 33, type: 'ESSAY', level: 'L2', tp: 'TP3',
+                materi: 'Prosedur Biosekuriti Alat Ukur dan Wadah Sampel',
+                indikator: 'Peserta didik dapat menerapkan langkah-langkah biosekuriti alat ukur dan wadah sampel untuk mencegah kontaminasi silang.',
+                question: 'Anda ditugaskan mengambil sampel air dan mengukur pH serta salinitas pada 5 kolam pemeliharaan ikan yang berbeda secara berurutan. Tuliskan langkah-langkah prosedur biosekuriti harian yang harus Anda terapkan pada wadah sampel dan alat ukur agar tidak terjadi kontaminasi silang antar-kolam!',
+                answerKey: '1) Siapkan wadah botol sampel terpisah dan diberi label khusus untuk masing-masing kolam (1 botol untuk 1 kolam). 2) Sebelum dan sesudah digunakan pada satu kolam, bilas probe pH meter dan prisma refraktometer menggunakan air bersih/akuades. 3) Lakukan sanitasi/desinfeksi ringan sesuai standar sensor (misal semprot alkohol 70% pada bagian luar atau rendam desinfektan aman), lalu bilas kembali dengan akuades. 4) Keringkan sensor dengan tisu lembut bersih (tanpa menggosok kasar) sebelum berpindah ke kolam berikutnya. 5) Gunakan footbath/celup alas kaki saat berpindah antarunit kolam.',
+                rubric: 'Skor 100: Menuliskan minimal 4-5 langkah prosedural biosekuriti secara runtut dan tepat. Skor 75: Menuliskan 3 langkah tepat. Skor 50: Menuliskan 2 langkah tepat. Skor 25: Jawaban bersifat umum tanpa prosedur biosekuriti alat. Skor 0: Tidak menjawab.'
+            },
+            {
+                id: 34, type: 'ESSAY', level: 'L2', tp: 'TP4',
+                materi: 'Teknik Pengambilan dan Penanganan Sampel Air Representatif',
+                indikator: 'Peserta didik dapat menentukan titik, kedalaman, waktu, dan cara penanganan sementara sampel air.',
+                question: 'Sebuah kolam pembesaran ikan patin memiliki ukuran 25 m × 15 m dengan kedalaman air 1,5 meter. Jelaskan bagaimana Anda menentukan: (a) titik lokasi sampling, (b) kedalaman pengambilan sampel, (c) waktu pengambilan sampel harian, dan (d) cara penanganan sementara jika sampel harus dibawa ke laboratorium!',
+                answerKey: '(a) Titik sampling: diambil secara komposit pada 3–5 titik diagonal/tengah kolam (menghindari titik tepat di bawah inlet/outlet atau sudut mati). (b) Kedalaman sampling: diambil pada kedalaman sekitar 40–60 cm dari permukaan air (zona kolom air tempat ikan beraktivitas). (c) Waktu sampling: pagi hari pukul 05.30–06.30 (kondisi DO dan pH terendah) dan sore hari pukul 14.00–15.00 (kondisi suhu, fotosintesis, dan pH tertinggi). (d) Penanganan sementara: masukkan air ke botol bersih hingga penuh tanpa gelembung udara (terutama untuk DO), tutup rapat, beri label, dan simpan dalam coolbox bersuhu ±4°C.',
+                rubric: 'Skor 100: Menjawab keempat aspek (a, b, c, d) secara akurat dan aplikatif. Skor 75: Menjawab 3 aspek dengan benar. Skor 50: Menjawab 2 aspek dengan benar. Skor 25: Hanya menjawab 1 aspek dengan benar. Skor 0: Tidak menjawab.'
+            },
+            {
+                id: 35, type: 'ESSAY', level: 'L3', tp: 'TP6',
+                materi: 'Analisis Permasalahan Kualitas Air Kimia-Biologi & Solusinya (HOTS)',
+                indikator: 'Peserta didik dapat menganalisis kasus penurunan kualitas air pagi hari dan merumuskan solusi teknis serta K3LH.',
+                question: 'STUDI KASUS: Pada pukul 06.00 pagi di tambak budidaya udang/bandeng SMK Waliwa Laimu, teknisi menemukan banyak ikan/udang berenang di permukaan (megap-megap), air berwarna hijau kecokelatan sangat pekat dengan kecerahan 15 cm, bau air agak menyengat, dan hasil pengukuran menunjukkan DO = 2,4 mg/L, pH = 6,7, serta amonia (TAN) = 1,2 mg/L. Analisislah penyebab utama masalah tersebut dan rumuskan minimal 4 (empat) langkah solusi teknis harian beserta aspek K3LH yang harus diperhatikan!',
+                answerKey: 'Analisis Penyebab: Terjadi akumulasi bahan organik (sisa pakan & feses) dan kepadatan plankton berlebih (blooming) yang menyebabkan konsumsi oksigen tinggi untuk respirasi serta dekomposisi anaerob pada malam hari sehingga DO turun drastis (<3 mg/L) dan amonia meningkat. Solusi Teknis: 1) Segera operasikan seluruh aerator/kincir air secara maksimal untuk menyuplai oksigen. 2) Hentikan atau kurangi pemberian pakan sementara hingga nafsu makan dan DO kembali normal (>4 mg/L). 3) Lakukan penyiponan lumpur organik di dasar kolam dan pergantian air parsial (20–30%) dengan air baru yang sudah terfiltrasi. 4) Aplikasikan probiotik pengurai bahan organik (bakteri nitrifikasi) dan kapur dolomit dosis terukur untuk menjaga alkalinitas dan pH. Aspek K3LH: Gunakan sepatu bot anti-slip, sarung tangan saat menangani probiotik/kapur, serta pastikan instalasi kabel kincir aman dari kebocoran arus listrik.',
+                rubric: 'Skor 100: Analisis penyebab sangat tepat + memberikan minimal 4 solusi teknis operasional + menyertakan aspek K3LH. Skor 80: Analisis tepat + 3 solusi teknis + K3LH. Skor 60: Analisis cukup tepat + 2 solusi teknis. Skor 30: Hanya menyebutkan solusi umum tanpa analisis kasus. Skor 0: Tidak menjawab.'
+            }
+        ];
+
+        /**
+         * 3. PENGATURAN DEFAULT & MANAJEMEN PENYIMPANAN LOKAL (LOCALSTORAGE)
+         */
+        const STORAGE_KEYS = {
+            SETTINGS: 'sas_mka_waliwa_settings_v1',
+            QUESTIONS: 'sas_mka_waliwa_questions_v1',
+            RESULTS: 'sas_mka_waliwa_results_v1',
+            ACTIVE_SESSION: 'sas_mka_waliwa_active_session_v1'
+        };
+
+        const DEFAULT_SETTINGS = {
+            school: 'SMK Waliwa Laimu',
+            teacher: 'Muh. Kasim Wattimena, S.Pd., Gr.',
+            subject: 'Manajemen Kualitas Air Harian',
+            className: 'XI / Fase F',
+            year: '2026/2027',
+            examDate: '27 November 2026',
+            durationMinutes: 120,
+            weightPG: 60,
+            weightEssay: 40,
+            adminPass: 'waliwa2026'
+        };
+
+        let appSettings = {};
+        let appQuestions = [];
+        let examResults = [];
+        let activeSession = null;
+        let timerInterval = null;
+        let isAdminLoggedIn = false;
+        let alarmInterval = null;
+        let audioCtx = null;
+
+        // Inisialisasi Aplikasi saat Halaman Dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            loadDatabase();
+            applySettingsToUI();
+            checkUnfinishedSession();
+            renderAllAdminAndDashboard();
+        });
+
+        function loadDatabase() {
+            try {
+                const savedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+                appSettings = savedSettings ? { ...DEFAULT_SETTINGS, ...JSON.parse(savedSettings) } : { ...DEFAULT_SETTINGS };
+
+                const savedQuestions = localStorage.getItem(STORAGE_KEYS.QUESTIONS);
+                appQuestions = savedQuestions ? JSON.parse(savedQuestions) : JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+
+                const savedResults = localStorage.getItem(STORAGE_KEYS.RESULTS);
+                examResults = savedResults ? JSON.parse(savedResults) : [];
+
+                const savedSession = localStorage.getItem(STORAGE_KEYS.ACTIVE_SESSION);
+                activeSession = savedSession ? JSON.parse(savedSession) : null;
+            } catch (err) {
+                console.error('Gagal memuat penyimpanan lokal:', err);
+                appSettings = { ...DEFAULT_SETTINGS };
+                appQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+                examResults = [];
+            }
+        }
+
+        function saveSettingsStorage() {
+            localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(appSettings));
+        }
+
+        function saveQuestionsStorage() {
+            localStorage.setItem(STORAGE_KEYS.QUESTIONS, JSON.stringify(appQuestions));
+        }
+
+        function saveResultsStorage() {
+            localStorage.setItem(STORAGE_KEYS.RESULTS, JSON.stringify(examResults));
+        }
+
+        function saveActiveSessionStorage() {
+            if (activeSession) {
+                localStorage.setItem(STORAGE_KEYS.ACTIVE_SESSION, JSON.stringify(activeSession));
+            } else {
+                localStorage.removeItem(STORAGE_KEYS.ACTIVE_SESSION);
+            }
+        }
+
+        function applySettingsToUI() {
+            document.getElementById('hdrSchoolName').textContent = appSettings.school.toUpperCase();
+            document.getElementById('hdrSubInfo').textContent = `SAS Ganjil ${appSettings.year} • ${appSettings.subject} (${appSettings.className})`;
+            document.getElementById('heroSubjectInfo').textContent = `Mata Pelajaran: ${appSettings.subject} — Kelas ${appSettings.className}`;
+            document.getElementById('pillSchool').textContent = appSettings.school;
+            document.getElementById('pillTeacher').textContent = appSettings.teacher;
+            document.getElementById('pillDate').textContent = appSettings.examDate || '27 November 2026';
+            document.getElementById('pillYear').textContent = appSettings.year;
+            document.getElementById('pillDuration').textContent = `${appSettings.durationMinutes} Menit`;
+
+            document.getElementById('tblSchool').textContent = appSettings.school;
+            document.getElementById('tblTeacher').textContent = appSettings.teacher;
+            document.getElementById('tblSubject').textContent = appSettings.subject;
+            document.getElementById('tblClass').textContent = `${appSettings.className} (Agribisnis Perikanan)`;
+            document.getElementById('tblTerm').textContent = `Ganjil / ${appSettings.year}`;
+            document.getElementById('tblDate').textContent = appSettings.examDate || '27 November 2026';
+            document.getElementById('tblDuration').textContent = `${appSettings.durationMinutes} Menit (Timer Otomatis)`;
+
+            // Isi form pengaturan admin
+            document.getElementById('setSchool').value = appSettings.school;
+            document.getElementById('setTeacher').value = appSettings.teacher;
+            document.getElementById('setSubject').value = appSettings.subject;
+            document.getElementById('setClass').value = appSettings.className;
+            document.getElementById('setYear').value = appSettings.year;
+            document.getElementById('setExamDate').value = appSettings.examDate || '27 November 2026';
+            document.getElementById('setDuration').value = appSettings.durationMinutes;
+            document.getElementById('setWeightPG').value = appSettings.weightPG;
+            document.getElementById('setWeightEssay').value = appSettings.weightEssay;
+            document.getElementById('setAdminPass').value = appSettings.adminPass;
+        }
+
+        /**
+         * 4. SISTEM NAVIGASI HALAMAN
+         */
+        function navigateTo(viewName) {
+            // Cegah perpindahan menu tanpa peringatan saat ujian sedang aktif berjalan
+            if (activeSession && !activeSession.isSubmitted && viewName !== 'ujian') {
+                showModal(
+                    '⚠️ Ujian Sedang Berlangsung',
+                    '<p>Anda sedang dalam sesi pengerjaan ujian. Silakan selesaikan dan kumpulkan ujian terlebih dahulu sebelum berpindah ke menu lain.</p>',
+                    [{ text: 'Kembali ke Ujian', class: 'btn-primary', onClick: closeModal }]
+                );
+                return;
+            }
+
+            document.querySelectorAll('.section-view').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            const targetSec = document.getElementById(`view-${viewName}`);
+            const targetBtn = document.querySelector(`.nav-btn[data-nav="${viewName}"]`);
+            if (targetSec) targetSec.classList.add('active');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (viewName === 'hasil') renderResultsTable();
+            if (viewName === 'sertifikat') populateCertificateSelect();
+            if (viewName === 'dashboard') {
+                syncTeacherAuthViews();
+                if (isAdminLoggedIn) renderTeacherDashboard();
+            }
+            if (viewName === 'admin') {
+                syncTeacherAuthViews();
+                if (isAdminLoggedIn) renderAllAdminAndDashboard();
+            }
+        }
+
+        function syncTeacherAuthViews() {
+            const adminLogin = document.getElementById('adminLoginBox');
+            const adminPanel = document.getElementById('adminControlPanel');
+            const dashLogin = document.getElementById('dashboardLoginBox');
+            const dashPanel = document.getElementById('dashboardMainContent');
+
+            if (isAdminLoggedIn) {
+                if (adminLogin) adminLogin.style.display = 'none';
+                if (adminPanel) adminPanel.style.display = 'block';
+                if (dashLogin) dashLogin.style.display = 'none';
+                if (dashPanel) dashPanel.style.display = 'block';
+            } else {
+                if (adminLogin) adminLogin.style.display = 'block';
+                if (adminPanel) adminPanel.style.display = 'none';
+                if (dashLogin) dashLogin.style.display = 'block';
+                if (dashPanel) dashPanel.style.display = 'none';
+            }
+        }
+
+        /**
+         * 5. SISTEM MODAL DIALOG UNIVERSAL (PENGGANTI ALERT & CONFIRM)
+         */
+        function showModal(title, bodyHTML, buttons = [{ text: 'Tutup', class: 'btn-primary', onClick: closeModal }], isLarge = false) {
+            const modal = document.getElementById('appModal');
+            const dialog = document.getElementById('appModalDialog');
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = bodyHTML;
+
+            if (isLarge) dialog.classList.add('modal-lg');
+            else dialog.classList.remove('modal-lg');
+
+            const footer = document.getElementById('modalFooter');
+            footer.innerHTML = '';
+            buttons.forEach(btn => {
+                const el = document.createElement('button');
+                el.type = 'button';
+                el.className = `btn ${btn.class || 'btn-primary'}`;
+                el.textContent = btn.text;
+                el.onclick = btn.onClick;
+                footer.appendChild(el);
+            });
+
+            modal.classList.add('open');
+        }
+
+        function closeModal() {
+            document.getElementById('appModal').classList.remove('open');
+        }
+
+        /**
+         * 6. SISTEM PELAKSANAAN UJIAN & PEMULIHAN SESI OFFLINE
+         */
+        function checkUnfinishedSession() {
+            const alertBox = document.getElementById('resumeSessionAlert');
+            if (activeSession && !activeSession.isSubmitted) {
+                document.getElementById('resumeStudentName').textContent =
+                    `${activeSession.studentName} (${activeSession.studentNumber})`;
+                alertBox.style.display = 'block';
+            } else {
+                alertBox.style.display = 'none';
+            }
+        }
+
+        function handleStartExam(e) {
+            e.preventDefault();
+            const nama = document.getElementById('inpNama').value.trim();
+            const nisn = document.getElementById('inpNisn').value.trim();
+            const kelas = document.getElementById('inpKelas').value.trim();
+            const noPeserta = document.getElementById('inpNoPeserta').value.trim();
+
+            if (!nama || !nisn || !kelas || !noPeserta) return;
+
+            // Cek apakah Nomor Peserta sudah pernah mengirimkan hasil ujian
+            const alreadySubmitted = examResults.some(
+                r => r.studentNumber.toLowerCase() === noPeserta.toLowerCase()
+            );
+
+            if (alreadySubmitted) {
+                showModal(
+                    '🚫 Akses Ujian Ditolak',
+                    `<p>Nomor Peserta <strong>${escapeHTML(noPeserta)}</strong> sudah tercatat menyelesaikan ujian ini.</p>
+                     <p style="margin-top:0.5rem;">Satu identitas peserta hanya diizinkan mengirim jawaban satu kali, kecuali direset oleh Guru/Admin.</p>`
+                );
+                return;
+            }
+
+            // Konfirmasi sebelum memulai timer ujian
+            showModal(
+                '🚀 Konfirmasi Mulai Ujian',
+                `<p>Anda akan memulai <strong>Sumatif Akhir Semester Ganjil</strong> dengan data berikut:</p>
+                 <ul style="margin:0.75rem 0 0.75rem 1.25rem;">
+                    <li>Nama: <strong>${escapeHTML(nama)}</strong></li>
+                    <li>NIS / NISN: <strong>${escapeHTML(nisn)}</strong></li>
+                    <li>Kelas: <strong>${escapeHTML(kelas)}</strong></li>
+                    <li>No. Peserta: <strong>${escapeHTML(noPeserta)}</strong></li>
+                    <li>Durasi Waktu: <strong>${appSettings.durationMinutes} Menit</strong></li>
+                 </ul>
+                 <p style="color:var(--danger); font-size:0.88rem;"><strong>Peringatan:</strong> Jangan berpindah tab browser selama ujian berlangsung karena pelanggaran akan dicatat otomatis.</p>`,
+                [
+                    { text: 'Batal', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: 'Ya, Mulai Sekarang',
+                        class: 'btn-primary',
+                        onClick: () => {
+                            closeModal();
+                            initializeNewExamSession(nama, nisn, kelas, noPeserta);
+                        }
+                    }
+                ]
+            );
+        }
+
+        function initializeNewExamSession(nama, nisn, kelas, noPeserta) {
+            const durationSec = (parseInt(appSettings.durationMinutes, 10) || 120) * 60;
+            activeSession = {
+                studentName: nama,
+                studentNisn: nisn,
+                studentClass: kelas,
+                studentNumber: noPeserta,
+                startTime: new Date().toISOString(),
+                endTimeTimestamp: Date.now() + durationSec * 1000,
+                currentIndex: 0,
+                answers: {},       // { questionId: indexJawabanPG atau stringEssay }
+                doubts: {},        // { questionId: true }
+                tabViolations: 0,
+                isLocked: false,
+                isSubmitted: false
+            };
+            saveActiveSessionStorage();
+            launchExamInterface();
+        }
+
+        function resumeActiveExam() {
+            if (activeSession && !activeSession.isSubmitted) {
+                launchExamInterface();
+            }
+        }
+
+        function launchExamInterface() {
+            document.getElementById('examLoginBox').style.display = 'none';
+            document.getElementById('examActiveArea').style.display = 'block';
+            const nisnInfo = activeSession.studentNisn ? ` • NIS/NISN: ${activeSession.studentNisn}` : '';
+            document.getElementById('activeStudentBanner').textContent = `Peserta: ${activeSession.studentName} (${activeSession.studentNumber}${nisnInfo}) • ${activeSession.studentClass}`;
+
+            renderQuestionNavGrids();
+            renderCurrentQuestion();
+            startCountdownTimer();
+
+            if (activeSession.isLocked) {
+                activateExamLockdown();
+            }
+        }
+
+        // Generator Suara Alarm Peringatan Offline (Web Audio API)
+        function triggerAlarmBurst() {
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                if (!audioCtx) audioCtx = new AudioContextClass();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                const now = audioCtx.currentTime;
+                const freqs = [880, 620, 880, 620];
+                freqs.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.18);
+
+                    gain.gain.setValueAtTime(0.001, now + i * 0.18);
+                    gain.gain.exponentialRampToValueAtTime(0.35, now + i * 0.18 + 0.03);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.18 + 0.16);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + i * 0.18);
+                    osc.stop(now + i * 0.18 + 0.17);
+                });
+            } catch (e) {
+                console.warn('Audio alarm tidak dapat diputar otomatis:', e);
+            }
+        }
+
+        function startAlarmLoop() {
+            stopAlarmLoop();
+            triggerAlarmBurst();
+            alarmInterval = setInterval(() => {
+                if (activeSession && activeSession.isLocked && !activeSession.isSubmitted) {
+                    triggerAlarmBurst();
+                } else {
+                    stopAlarmLoop();
+                }
+            }, 1400);
+        }
+
+        function stopAlarmLoop() {
+            if (alarmInterval) {
+                clearInterval(alarmInterval);
+                alarmInterval = null;
+            }
+        }
+
+        function activateExamLockdown() {
+            if (!activeSession || activeSession.isSubmitted) return;
+            activeSession.isLocked = true;
+            saveActiveSessionStorage();
+            closeModal();
+
+            document.getElementById('lockdownStudentName').textContent =
+                `${activeSession.studentName} (${activeSession.studentNumber})`;
+            document.getElementById('lockdownViolationCount').textContent =
+                `${activeSession.tabViolations} kali`;
+            document.getElementById('lockdownPinInput').value = '';
+            document.getElementById('lockdownErrorMsg').style.display = 'none';
+            document.getElementById('examLockdownOverlay').classList.add('active');
+
+            startAlarmLoop();
+            setTimeout(() => {
+                const pinEl = document.getElementById('lockdownPinInput');
+                if (pinEl) pinEl.focus();
+            }, 100);
+        }
+
+        function unlockExamWithPin(e) {
+            e.preventDefault();
+            const pinVal = document.getElementById('lockdownPinInput').value;
+            if (pinVal === appSettings.adminPass) {
+                if (activeSession) {
+                    activeSession.isLocked = false;
+                    saveActiveSessionStorage();
+                }
+                stopAlarmLoop();
+                document.getElementById('examLockdownOverlay').classList.remove('active');
+                document.getElementById('lockdownErrorMsg').style.display = 'none';
+            } else {
+                document.getElementById('lockdownErrorMsg').style.display = 'block';
+                triggerAlarmBurst();
+            }
+        }
+
+        // Deteksi Perpindahan Tab / Keluar Aplikasi saat Ujian Berlangsung
+        function recordTabDepartureViolation() {
+            if (!activeSession || activeSession.isSubmitted) return;
+            activeSession.tabViolations = (activeSession.tabViolations || 0) + 1;
+            if (activeSession.tabViolations >= 2) {
+                activeSession.isLocked = true;
+            }
+            saveActiveSessionStorage();
+            updateExamProgressBanner();
+
+            if (activeSession.tabViolations >= 2) {
+                activateExamLockdown();
+            }
+        }
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && activeSession && !activeSession.isSubmitted) {
+                recordTabDepartureViolation();
+            }
+        });
+
+        window.addEventListener('focus', () => {
+            if (!activeSession || activeSession.isSubmitted) return;
+
+            if (activeSession.isLocked || activeSession.tabViolations >= 2) {
+                activateExamLockdown();
+                return;
+            }
+
+            if (activeSession.tabViolations === 1) {
+                triggerAlarmBurst();
+                const modalOpen = document.getElementById('appModal').classList.contains('open');
+                if (!modalOpen) {
+                    showModal(
+                        '⚠️ Peringatan Pelanggaran Pertama (1/2)',
+                        `<p>Sistem mendeteksi Anda meninggalkan halaman/tab ujian sebanyak <strong>1 kali</strong>!</p>
+                         <p style="margin-top:0.5rem; color:var(--danger); font-weight:600;">Peringatan Keras: Jika Anda meninggalkan layar ujian 1 kali lagi (total 2 kali), layar ujian akan TERKUNCI OTOMATIS dengan suara ALARM dan hanya dapat dibuka oleh Pengawas menggunakan PIN!</p>`,
+                        [{ text: 'Saya Mengerti & Lanjutkan Ujian', class: 'btn-warning', onClick: closeModal }]
+                    );
+                }
+            }
+        });
+
+        function startCountdownTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+
+            const updateClock = () => {
+                if (!activeSession || activeSession.isSubmitted) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+                const remainingMs = activeSession.endTimeTimestamp - Date.now();
+                if (remainingMs <= 0) {
+                    document.getElementById('examTimerDisplay').textContent = '00:00';
+                    clearInterval(timerInterval);
+                    stopAlarmLoop();
+                    document.getElementById('examLockdownOverlay').classList.remove('active');
+                    submitExamAutomatically('Waktu ujian telah habis! Jawaban Anda telah disimpan dan dikumpulkan secara otomatis.');
+                    return;
+                }
+
+                const totalSeconds = Math.floor(remainingMs / 1000);
+                const mins = Math.floor(totalSeconds / 60);
+                const secs = totalSeconds % 60;
+                document.getElementById('examTimerDisplay').textContent =
+                    `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            };
+
+            updateClock();
+            timerInterval = setInterval(updateClock, 1000);
+        }
+
+        function renderQuestionNavGrids() {
+            const gridPG = document.getElementById('navGridPG');
+            const gridEssay = document.getElementById('navGridEssay');
+            gridPG.innerHTML = '';
+            gridEssay.innerHTML = '';
+
+            appQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'q-num-btn';
+                btn.textContent = idx + 1;
+
+                const ans = activeSession.answers[q.id];
+                const hasAnswer = ans !== undefined && ans !== null && String(ans).trim() !== '';
+                if (activeSession.doubts[q.id]) {
+                    btn.classList.add('doubt');
+                } else if (hasAnswer) {
+                    btn.classList.add('answered');
+                }
+
+                if (idx === activeSession.currentIndex) {
+                    btn.classList.add('current');
+                }
+
+                btn.onclick = () => {
+                    activeSession.currentIndex = idx;
+                    saveActiveSessionStorage();
+                    renderCurrentQuestion();
+                    renderQuestionNavGrids();
+                };
+
+                if (q.type === 'PG') gridPG.appendChild(btn);
+                else gridEssay.appendChild(btn);
+            });
+
+            updateExamProgressBanner();
+        }
+
+        function updateExamProgressBanner() {
+            if (!activeSession) return;
+            let answeredCount = 0;
+            appQuestions.forEach(q => {
+                const ans = activeSession.answers[q.id];
+                if (ans !== undefined && ans !== null && String(ans).trim() !== '') answeredCount++;
+            });
+            document.getElementById('activeProgressText').textContent =
+                `Terjawab: ${answeredCount} / ${appQuestions.length} Soal | Peringatan Tab: ${activeSession.tabViolations || 0}`;
+        }
+
+        function renderCurrentQuestion() {
+            const idx = activeSession.currentIndex;
+            const q = appQuestions[idx];
+            if (!q) return;
+
+            document.getElementById('qNumberHeading').textContent = `Soal No. ${idx + 1} dari ${appQuestions.length}`;
+            document.getElementById('qTypeBadge').textContent = q.type === 'PG' ? 'PILIHAN GANDA' : 'ESSAY / URAIAN';
+            document.getElementById('qLevelBadge').textContent = `Level ${q.level.replace('L', '')} (${q.tp})`;
+            document.getElementById('questionTextContainer').innerHTML = escapeHTML(q.question).replace(/\n/g, '<br>');
+
+            const mcBox = document.getElementById('mcOptionsContainer');
+            const essayBox = document.getElementById('essayInputContainer');
+
+            if (q.type === 'PG') {
+                mcBox.style.display = 'flex';
+                essayBox.style.display = 'none';
+                mcBox.innerHTML = '';
+
+                const letters = ['A', 'B', 'C', 'D', 'E'];
+                q.options.forEach((optText, optIdx) => {
+                    const isSelected = activeSession.answers[q.id] === optIdx;
+                    const item = document.createElement('div');
+                    item.className = `option-item ${isSelected ? 'selected' : ''}`;
+                    item.onclick = () => selectMCOption(q.id, optIdx);
+
+                    item.innerHTML = `
+                        <div class="option-letter">${letters[optIdx]}</div>
+                        <div style="flex:1; padding-top:0.2rem;">${escapeHTML(optText)}</div>
+                    `;
+                    mcBox.appendChild(item);
+                });
+            } else {
+                mcBox.style.display = 'none';
+                essayBox.style.display = 'block';
+                const textarea = document.getElementById('essayAnswerTextarea');
+                textarea.value = activeSession.answers[q.id] || '';
+            }
+
+            // Tombol Ragu-ragu
+            const doubtBtn = document.getElementById('btnToggleDoubt');
+            if (activeSession.doubts[q.id]) {
+                doubtBtn.innerHTML = '✅ Hapus Tanda Ragu';
+            } else {
+                doubtBtn.innerHTML = '🚩 Tandai Ragu-Ragu';
+            }
+
+            document.getElementById('btnPrevQ').disabled = idx === 0;
+            document.getElementById('btnNextQ').disabled = idx === appQuestions.length - 1;
+        }
+
+        function selectMCOption(questionId, optionIndex) {
+            activeSession.answers[questionId] = optionIndex;
+            saveActiveSessionStorage();
+            flashAutoSave();
+            renderCurrentQuestion();
+            renderQuestionNavGrids();
+        }
+
+        function handleEssayInput(val) {
+            const q = appQuestions[activeSession.currentIndex];
+            activeSession.answers[q.id] = val;
+            saveActiveSessionStorage();
+            flashAutoSave();
+            renderQuestionNavGrids();
+        }
+
+        function flashAutoSave() {
+            const el = document.getElementById('autoSaveIndicator');
+            el.textContent = '⏳ Menyimpan...';
+            setTimeout(() => {
+                el.textContent = '💾 Tersimpan otomatis';
+            }, 350);
+        }
+
+        function toggleDoubtCurrent() {
+            const q = appQuestions[activeSession.currentIndex];
+            if (activeSession.doubts[q.id]) {
+                delete activeSession.doubts[q.id];
+            } else {
+                activeSession.doubts[q.id] = true;
+            }
+            saveActiveSessionStorage();
+            renderCurrentQuestion();
+            renderQuestionNavGrids();
+        }
+
+        function changeQuestion(step) {
+            const nextIdx = activeSession.currentIndex + step;
+            if (nextIdx >= 0 && nextIdx < appQuestions.length) {
+                activeSession.currentIndex = nextIdx;
+                saveActiveSessionStorage();
+                renderCurrentQuestion();
+                renderQuestionNavGrids();
+            }
+        }
+
+        function confirmFinishExam() {
+            let unanswered = 0;
+            let doubtCount = 0;
+            appQuestions.forEach(q => {
+                const ans = activeSession.answers[q.id];
+                if (ans === undefined || ans === null || String(ans).trim() === '') unanswered++;
+                if (activeSession.doubts[q.id]) doubtCount++;
+            });
+
+            let warningHTML = `<p>Apakah Anda yakin ingin mengakhiri dan mengumpulkan ujian sekarang?</p>`;
+            if (unanswered > 0 || doubtCount > 0) {
+                warningHTML += `<div style="background:#fef3c7; border:1px solid #f59e0b; padding:0.75rem; border-radius:8px; margin-top:0.75rem; font-size:0.9rem;">
+                    <strong>Perhatian:</strong> Masih terdapat <strong>${unanswered} soal belum dijawab</strong> dan <strong>${doubtCount} soal ditandai ragu-ragu</strong>.
+                </div>`;
+            }
+            warningHTML += `<p style="margin-top:0.75rem; font-size:0.88rem; color:var(--text-muted);">Setelah dikumpulkan, jawaban tidak dapat diubah kembali.</p>`;
+
+            showModal(
+                '🏁 Konfirmasi Selesai Ujian',
+                warningHTML,
+                [
+                    { text: 'Periksa Kembali', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: 'Ya, Kumpulkan Jawaban',
+                        class: 'btn-danger',
+                        onClick: () => {
+                            closeModal();
+                            submitExamAutomatically('Ujian berhasil dikumpulkan! Terima kasih telah mengerjakan dengan jujur.');
+                        }
+                    }
+                ]
+            );
+        }
+
+        function submitExamAutomatically(completionMessage) {
+            if (!activeSession || activeSession.isSubmitted) return;
+
+            if (timerInterval) clearInterval(timerInterval);
+            activeSession.isSubmitted = true;
+
+            // Hitung koreksi Pilihan Ganda otomatis
+            const pgQuestions = appQuestions.filter(q => q.type === 'PG');
+            const essayQuestions = appQuestions.filter(q => q.type === 'ESSAY');
+
+            let correctPG = 0;
+            pgQuestions.forEach(q => {
+                if (activeSession.answers[q.id] === q.answer) {
+                    correctPG++;
+                }
+            });
+            const wrongPG = pgQuestions.length - correctPG;
+            const scorePG = pgQuestions.length > 0 ? Number(((correctPG / pgQuestions.length) * 100).toFixed(2)) : 0;
+
+            // Siapkan struktur skor essay (default 0 menunggu koreksi guru)
+            const essayScores = {};
+            essayQuestions.forEach(q => {
+                essayScores[q.id] = 0;
+            });
+
+            const finalScore = calculateFinalScore(scorePG, 0);
+
+            const resultRecord = {
+                id: 'RES-' + Date.now(),
+                studentName: activeSession.studentName,
+                studentNisn: activeSession.studentNisn || '-',
+                studentClass: activeSession.studentClass,
+                studentNumber: activeSession.studentNumber,
+                submittedAt: new Date().toLocaleString('id-ID'),
+                tabViolations: activeSession.tabViolations || 0,
+                answers: { ...activeSession.answers },
+                correctPG,
+                wrongPG,
+                totalPG: pgQuestions.length,
+                scorePG,
+                essayScores,
+                scoreEssay: 0,
+                essayGraded: false,
+                finalScore
+            };
+
+            examResults.push(resultRecord);
+            saveResultsStorage();
+
+            // Bersihkan sesi aktif
+            activeSession = null;
+            saveActiveSessionStorage();
+
+            // Kembalikan tampilan halaman ujian ke form login
+            document.getElementById('examActiveArea').style.display = 'none';
+            document.getElementById('examLoginBox').style.display = 'block';
+            document.getElementById('examStartForm').reset();
+            checkUnfinishedSession();
+
+            showModal(
+                '✅ Ujian Selesai',
+                `<p>${completionMessage}</p>
+                 <div style="background:#f0f9ff; border:1px solid #bae6fd; padding:1rem; border-radius:8px; margin-top:0.75rem;">
+                    <div>Peserta: <strong>${escapeHTML(resultRecord.studentName)}</strong> (${escapeHTML(resultRecord.studentNumber)})</div>
+                    <div>Jawaban PG Benar: <strong>${correctPG} / ${pgQuestions.length}</strong></div>
+                    <div>Nilai Pilihan Ganda: <strong>${scorePG}</strong> (Bobot ${appSettings.weightPG}%)</div>
+                    <div style="font-size:0.85rem; color:var(--text-muted); margin-top:0.35rem;">* Nilai Essay (Bobot ${appSettings.weightEssay}%) sedang menunggu pemeriksaan Guru Pengampu.</div>
+                 </div>`,
+                [
+                    {
+                        text: 'Lihat Daftar Hasil',
+                        class: 'btn-primary',
+                        onClick: () => {
+                            closeModal();
+                            navigateTo('hasil');
+                        }
+                    }
+                ]
+            );
+        }
+
+        function calculateFinalScore(scorePG, scoreEssay) {
+            const wPG = (Number(appSettings.weightPG) || 60) / 100;
+            const wEssay = (Number(appSettings.weightEssay) || 40) / 100;
+            return Number(((scorePG * wPG) + (scoreEssay * wEssay)).toFixed(2));
+        }
+
+        function getPredicate(score) {
+            if (score >= 90) return { code: 'A', label: 'Sangat Baik (Istimewa)', badge: 'badge-green' };
+            if (score >= 80) return { code: 'B', label: 'Baik (Kompeten)', badge: 'badge-teal' };
+            if (score >= 70) return { code: 'C', label: 'Cukup (Tuntas)', badge: 'badge-blue' };
+            return { code: 'D', label: 'Perlu Bimbingan', badge: 'badge-amber' };
+        }
+
+        /**
+         * 7. HALAMAN HASIL PESERTA, EKSPOR CSV & CETAK KARTU HASIL
+         */
+        function renderResultsTable() {
+            const tbody = document.getElementById('resultsTableBody');
+            const keyword = (document.getElementById('searchResultInput').value || '').toLowerCase();
+
+            const filtered = examResults.filter(r =>
+                r.studentName.toLowerCase().includes(keyword) ||
+                r.studentNumber.toLowerCase().includes(keyword) ||
+                (r.studentNisn && r.studentNisn.toLowerCase().includes(keyword))
+            );
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="13" style="text-align:center; padding:1.5rem; color:var(--text-muted);">Tidak ditemukan data hasil ujian yang sesuai.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((r, i) => {
+                const pred = getPredicate(r.finalScore);
+                const statusBadge = r.essayGraded
+                    ? '<span class="badge badge-green">Selesai Dinilai</span>'
+                    : '<span class="badge badge-amber">Menunggu Essay</span>';
+
+                return `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td><strong>${escapeHTML(r.studentNumber)}</strong></td>
+                        <td>${escapeHTML(r.studentNisn || '-')}</td>
+                        <td>${escapeHTML(r.studentName)}</td>
+                        <td>${escapeHTML(r.studentClass)}</td>
+                        <td>${r.correctPG} B / ${r.wrongPG} S</td>
+                        <td>${r.scorePG}</td>
+                        <td>${r.scoreEssay}</td>
+                        <td><strong style="font-size:1rem; color:var(--primary-dark);">${r.finalScore}</strong></td>
+                        <td><span class="badge ${pred.badge}">${pred.code} (${pred.label.split(' ')[0]})</span></td>
+                        <td>${statusBadge}</td>
+                        <td style="font-size:0.8rem;">${escapeHTML(r.submittedAt)}</td>
+                        <td class="no-print">
+                            <button class="btn btn-outline btn-sm" onclick="printStudentResultCard('${r.id}')">🖨️ Kartu</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function exportResultsCSV() {
+            if (examResults.length === 0) {
+                showModal('Informasi', '<p>Belum ada data hasil ujian untuk diekspor.</p>');
+                return;
+            }
+
+            const headers = [
+                'No', 'Nomor Peserta', 'NIS / NISN', 'Nama Lengkap', 'Kelas',
+                'PG Benar', 'PG Salah', 'Nilai PG', 'Nilai Essay',
+                'Nilai Akhir', 'Predikat', 'Status Koreksi Essay',
+                'Pelanggaran Tab', 'Waktu Selesai'
+            ];
+
+            const rows = examResults.map((r, i) => {
+                const pred = getPredicate(r.finalScore);
+                return [
+                    i + 1,
+                    `"${r.studentNumber}"`,
+                    `"${r.studentNisn || '-'}"`,
+                    `"${r.studentName}"`,
+                    `"${r.studentClass}"`,
+                    r.correctPG,
+                    r.wrongPG,
+                    r.scorePG,
+                    r.scoreEssay,
+                    r.finalScore,
+                    `"${pred.code} - ${pred.label}"`,
+                    `"${r.essayGraded ? 'Sudah Dinilai' : 'Menunggu Koreksi'}"`,
+                    r.tabViolations || 0,
+                    `"${r.submittedAt}"`
+                ].join(',');
+            });
+
+            const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Hasil_SAS_Manajemen_Kualitas_Air_${appSettings.year.replace('/', '-')}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function printResultsTable() {
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = `
+                <div style="padding:1.5rem; font-family:sans-serif;">
+                    <h2 style="text-align:center; margin-bottom:0.25rem;">REKAPITULASI NILAI SUMATIF AKHIR SEMESTER GANJIL</h2>
+                    <h3 style="text-align:center; margin-bottom:1rem; font-weight:normal;">${escapeHTML(appSettings.school)} • Mapel: ${escapeHTML(appSettings.subject)} (${escapeHTML(appSettings.className)}) • TP ${escapeHTML(appSettings.year)}</h3>
+                    ${document.getElementById('resultsTableWrapper').innerHTML}
+                    <div style="margin-top:2rem; text-align:right; padding-right:2rem;">
+                        <p>Guru Mata Pelajaran,</p>
+                        <br><br><br>
+                        <p><strong>${escapeHTML(appSettings.teacher)}</strong></p>
+                    </div>
+                </div>
+            `;
+            window.print();
+        }
+
+        function printStudentResultCard(resultId) {
+            const r = examResults.find(item => item.id === resultId);
+            if (!r) return;
+            const pred = getPredicate(r.finalScore);
+
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = `
+                <div style="padding:2rem; font-family:sans-serif; max-width:680px; margin:0 auto; border:2px solid #025b8c; border-radius:10px;">
+                    <div style="text-align:center; border-bottom:2px solid #025b8c; padding-bottom:1rem; margin-bottom:1.25rem;">
+                        <h2 style="color:#013d5e; margin:0;">KARTU HASIL SUMATIF AKHIR SEMESTER</h2>
+                        <p style="margin:0.25rem 0 0;">${escapeHTML(appSettings.school)} • Tahun Pelajaran ${escapeHTML(appSettings.year)}</p>
+                    </div>
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:1.25rem;">
+                        <tr><td style="padding:6px; width:38%;"><strong>Nama Peserta</strong></td><td style="padding:6px;">: ${escapeHTML(r.studentName)}</td></tr>
+                        <tr><td style="padding:6px;"><strong>NIS / NISN</strong></td><td style="padding:6px;">: ${escapeHTML(r.studentNisn || '-')}</td></tr>
+                        <tr><td style="padding:6px;"><strong>Nomor Peserta</strong></td><td style="padding:6px;">: ${escapeHTML(r.studentNumber)}</td></tr>
+                        <tr><td style="padding:6px;"><strong>Kelas / Fase</strong></td><td style="padding:6px;">: ${escapeHTML(r.studentClass)}</td></tr>
+                        <tr><td style="padding:6px;"><strong>Mata Pelajaran</strong></td><td style="padding:6px;">: ${escapeHTML(appSettings.subject)}</td></tr>
+                        <tr><td style="padding:6px;"><strong>Waktu Selesai</strong></td><td style="padding:6px;">: ${escapeHTML(r.submittedAt)}</td></tr>
+                    </table>
+                    <table style="width:100%; border-collapse:collapse; border:1px solid #cbd5e1; margin-bottom:1.5rem;">
+                        <tr style="background:#e0f2fe;">
+                            <th style="padding:8px; border:1px solid #cbd5e1;">Komponen Penilaian</th>
+                            <th style="padding:8px; border:1px solid #cbd5e1;">Bobot</th>
+                            <th style="padding:8px; border:1px solid #cbd5e1;">Skor</th>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #cbd5e1;">Pilihan Ganda (${r.correctPG} Benar / ${r.wrongPG} Salah)</td>
+                            <td style="padding:8px; border:1px solid #cbd5e1; text-align:center;">${appSettings.weightPG}%</td>
+                            <td style="padding:8px; border:1px solid #cbd5e1; text-align:center;">${r.scorePG}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px; border:1px solid #cbd5e1;">Uraian / Essay (${r.essayGraded ? 'Sudah Dinilai' : 'Menunggu Koreksi Guru'})</td>
+                            <td style="padding:8px; border:1px solid #cbd5e1; text-align:center;">${appSettings.weightEssay}%</td>
+                            <td style="padding:8px; border:1px solid #cbd5e1; text-align:center;">${r.scoreEssay}</td>
+                        </tr>
+                        <tr style="background:#f8fafc; font-weight:bold;">
+                            <td style="padding:10px; border:1px solid #cbd5e1;" colspan="2">NILAI AKHIR & PREDIKAT</td>
+                            <td style="padding:10px; border:1px solid #cbd5e1; text-align:center; font-size:1.15rem; color:#025b8c;">${r.finalScore} (${pred.code} - ${pred.label})</td>
+                        </tr>
+                    </table>
+                    <div style="text-align:right; margin-top:1.5rem;">
+                        <p>Guru Pengampu,</p>
+                        <br><br>
+                        <p><strong>${escapeHTML(appSettings.teacher)}</strong></p>
+                    </div>
+                </div>
+            `;
+            window.print();
+        }
+
+        /**
+         * 8. HALAMAN SERTIFIKAT
+         */
+        function populateCertificateSelect() {
+            const sel = document.getElementById('certParticipantSelect');
+            const currentVal = sel.value;
+            sel.innerHTML = '<option value="">-- Pilih Peserta yang Telah Menyelesaikan Ujian --</option>';
+            examResults.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r.id;
+                const statusText = r.essayGraded ? 'Selesai Dinilai' : 'Menunggu Essay';
+                opt.textContent = `${r.studentNumber} - ${r.studentName} (Nilai Akhir: ${r.finalScore} | ${statusText})`;
+                sel.appendChild(opt);
+            });
+            if (currentVal && examResults.some(item => item.id === currentVal)) {
+                sel.value = currentVal;
+            }
+            renderCertificatePreview();
+        }
+
+        function renderCertificatePreview() {
+            const id = document.getElementById('certParticipantSelect').value;
+            const container = document.getElementById('certificateContainer');
+            const r = examResults.find(item => item.id === id);
+
+            if (!r) {
+                container.innerHTML = `<div class="card" style="text-align:center; color:var(--text-muted); padding:2.5rem;">Silakan pilih nama peserta pada daftar di atas untuk menampilkan pratinjau sertifikat resmi.</div>`;
+                return;
+            }
+
+            const pred = getPredicate(r.finalScore);
+            container.innerHTML = `
+                <div class="certificate-wrapper" id="certNode">
+                    <div class="cert-inner">
+                        <div style="font-size:0.9rem; font-weight:700; color:var(--secondary); letter-spacing:2px; text-transform:uppercase;">
+                            ${escapeHTML(appSettings.school)}
+                        </div>
+                        <h2 style="font-size:2rem; color:var(--primary-dark); margin:0.4rem 0; letter-spacing:1px;">SERTIFIKAT HASIL ASESMEN</h2>
+                        <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:1.5rem;">
+                            Sumatif Akhir Semester (SAS) Ganjil Tahun Pelajaran ${escapeHTML(appSettings.year)}
+                        </p>
+
+                        <p style="font-size:1rem;">Diberikan kepada:</p>
+                        <h3 style="font-size:1.75rem; color:var(--primary); border-bottom:2px solid var(--secondary); display:inline-block; padding:0.25rem 2rem; margin:0.5rem 0;">
+                            ${escapeHTML(r.studentName)}
+                        </h3>
+                        <p style="font-size:0.95rem; color:var(--text-muted); margin-bottom:1.25rem;">
+                            NIS / NISN: <strong>${escapeHTML(r.studentNisn || '-')}</strong> • Nomor Peserta: <strong>${escapeHTML(r.studentNumber)}</strong> • Kelas: <strong>${escapeHTML(r.studentClass)}</strong>
+                        </p>
+
+                        <p style="max-width:620px; margin:0 auto 1.25rem; font-size:0.98rem;">
+                            Telah mengikuti dan menyelesaikan evaluasi pembelajaran pada mata pelajaran <strong>${escapeHTML(appSettings.subject)}</strong> dengan capaian hasil sebagai berikut:
+                        </p>
+
+                        <div style="display:inline-flex; flex-wrap:wrap; justify-content:center; gap:1.25rem; background:#f0f9ff; border:1.5px solid #bae6fd; padding:0.9rem 1.75rem; border-radius:10px; margin-bottom:1.75rem;">
+                            <div>
+                                <div style="font-size:0.75rem; color:var(--text-muted);">NILAI PG (${appSettings.weightPG}%)</div>
+                                <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">${r.scorePG}</div>
+                            </div>
+                            <div style="border-left:1px solid #bae6fd; padding-left:1.25rem;">
+                                <div style="font-size:0.75rem; color:var(--text-muted);">NILAI ESSAY (${appSettings.weightEssay}%)</div>
+                                <div style="font-size:1.3rem; font-weight:700; color:var(--primary);">${r.scoreEssay}</div>
+                            </div>
+                            <div style="border-left:1px solid #bae6fd; padding-left:1.25rem;">
+                                <div style="font-size:0.75rem; color:var(--text-muted);">NILAI AKHIR</div>
+                                <div style="font-size:1.6rem; font-weight:800; color:var(--primary-dark);">${r.finalScore}</div>
+                            </div>
+                            <div style="border-left:1px solid #bae6fd; padding-left:1.25rem;">
+                                <div style="font-size:0.75rem; color:var(--text-muted);">PREDIKAT</div>
+                                <div style="font-size:1.2rem; font-weight:800; color:var(--secondary); padding-top:0.2rem;">${pred.code} (${pred.label})</div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:1.5rem; text-align:left; font-size:0.9rem;">
+                            <div>
+                                <div style="color:var(--text-muted);">Tanggal Pelaksanaan:</div>
+                                <strong>${escapeHTML(appSettings.examDate || '27 November 2026')}</strong>
+                            </div>
+                            <div style="text-align:center;">
+                                <div>Guru Pengampu Mata Pelajaran,</div>
+                                <br><br><br>
+                                <strong style="text-decoration:underline;">${escapeHTML(appSettings.teacher)}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function printCertificate() {
+            const certNode = document.getElementById('certNode');
+            if (!certNode) {
+                showModal('Pilih Peserta', '<p>Silakan pilih nama peserta terlebih dahulu sebelum mencetak sertifikat.</p>');
+                return;
+            }
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = certNode.outerHTML;
+            window.print();
+        }
+
+        /**
+         * 9. DASHBOARD GURU & PENILAIAN ESSAY MANUAL
+         */
+        function renderTeacherDashboard() {
+            const selesaiCount = examResults.length;
+            const sedangCount = (activeSession && !activeSession.isSubmitted) ? 1 : 0;
+            const totalCount = selesaiCount + sedangCount;
+
+            document.getElementById('statTotalPeserta').textContent = totalCount;
+            document.getElementById('statSelesai').textContent = selesaiCount;
+            document.getElementById('statBelum').textContent = sedangCount;
+
+            if (selesaiCount === 0) {
+                document.getElementById('statRataRata').textContent = '0.0';
+                document.getElementById('statMaxScore').textContent = '0';
+                document.getElementById('statMinScore').textContent = '0';
+                document.getElementById('gradeChartContainer').innerHTML = '<p style="color:var(--text-muted); font-size:0.9rem;">Belum ada data nilai untuk ditampilkan.</p>';
+                document.getElementById('essayGradingListBody').innerHTML = '<tr><td colspan="4" style="text-align:center;">Belum ada peserta mengumpulkan ujian.</td></tr>';
+                return;
+            }
+
+            const scores = examResults.map(r => Number(r.finalScore));
+            const avg = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1);
+            const maxVal = Math.max(...scores);
+            const minVal = Math.min(...scores);
+
+            document.getElementById('statRataRata').textContent = avg;
+            document.getElementById('statMaxScore').textContent = maxVal;
+            document.getElementById('statMinScore').textContent = minVal;
+
+            // Grafik Distribusi Predikat
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            scores.forEach(s => {
+                const p = getPredicate(s).code;
+                counts[p]++;
+            });
+
+            const chartLabels = [
+                { key: 'A', name: 'Predikat A (90–100)' },
+                { key: 'B', name: 'Predikat B (80–89)' },
+                { key: 'C', name: 'Predikat C (70–79)' },
+                { key: 'D', name: 'Predikat D (<70)' }
+            ];
+
+            document.getElementById('gradeChartContainer').innerHTML = chartLabels.map(item => {
+                const pct = Math.round((counts[item.key] / selesaiCount) * 100);
+                return `
+                    <div class="bar-chart-row">
+                        <div class="bar-label">${item.name}</div>
+                        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+                        <div class="bar-val">${counts[item.key]} (${pct}%)</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Tabel Koreksi Essay
+            document.getElementById('essayGradingListBody').innerHTML = examResults.map(r => `
+                <tr>
+                    <td>
+                        <strong>${escapeHTML(r.studentName)}</strong><br>
+                        <small style="color:var(--text-muted);">${escapeHTML(r.studentNumber)}</small>
+                    </td>
+                    <td>${r.scorePG}</td>
+                    <td>${r.essayGraded
+                        ? `<span class="badge badge-green">Dinilai (${r.scoreEssay})</span>`
+                        : `<span class="badge badge-amber">Belum Dinilai</span>`}
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="openEssayGradingModal('${r.id}')">
+                            ✍️ Koreksi Essay
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openEssayGradingModal(resultId) {
+            const r = examResults.find(item => item.id === resultId);
+            if (!r) return;
+
+            const essayQuestions = appQuestions.filter(q => q.type === 'ESSAY');
+            let html = `<p style="margin-bottom:1rem;">Peserta: <strong>${escapeHTML(r.studentName)}</strong> (${escapeHTML(r.studentNumber)}) | Nilai PG: <strong>${r.scorePG}</strong></p>`;
+
+            essayQuestions.forEach((q, idx) => {
+                const studentAns = r.answers[q.id] || '(Peserta tidak mengisi jawaban)';
+                const currentScore = r.essayScores && r.essayScores[q.id] !== undefined ? r.essayScores[q.id] : 0;
+
+                html += `
+                    <div style="border:1.5px solid var(--border-color); border-radius:10px; padding:1rem; margin-bottom:1rem; background:#f8fafc;">
+                        <div style="font-weight:700; color:var(--primary-dark); margin-bottom:0.35rem;">
+                            Soal Essay No. ${idx + 1} (Nomor Ujian ${30 + idx + 1} • ${q.level})
+                        </div>
+                        <p style="font-size:0.9rem; margin-bottom:0.6rem;">${escapeHTML(q.question)}</p>
+
+                        <div style="background:white; border-left:4px solid var(--primary); padding:0.65rem; border-radius:6px; margin-bottom:0.6rem;">
+                            <div style="font-size:0.78rem; font-weight:700; color:var(--primary);">JAWABAN PESERTA:</div>
+                            <div style="font-size:0.9rem; white-space:pre-wrap;">${escapeHTML(studentAns)}</div>
+                        </div>
+
+                        <div style="background:#f0fdf4; border-left:4px solid var(--success); padding:0.65rem; border-radius:6px; margin-bottom:0.75rem; font-size:0.84rem;">
+                            <div><strong>Kunci Jawaban:</strong> ${escapeHTML(q.answerKey)}</div>
+                            <div style="margin-top:0.3rem; color:#166534;"><strong>Rubrik Penskoran:</strong> ${escapeHTML(q.rubric)}</div>
+                        </div>
+
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
+                            <label style="font-weight:700; font-size:0.88rem;">Skor Butir Ini (0 – 100):</label>
+                            <input type="number" class="form-control essay-score-input" data-qid="${q.id}" min="0" max="100" value="${currentScore}" style="max-width:120px;">
+                        </div>
+                    </div>
+                `;
+            });
+
+            showModal(
+                '✍️ Koreksi Jawaban Uraian / Essay',
+                html,
+                [
+                    { text: 'Batal', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: '💾 Simpan Nilai Essay',
+                        class: 'btn-secondary',
+                        onClick: () => saveEssayGrades(resultId)
+                    }
+                ],
+                true
+            );
+        }
+
+        function saveEssayGrades(resultId) {
+            const r = examResults.find(item => item.id === resultId);
+            if (!r) return;
+
+            if (!r.essayScores) r.essayScores = {};
+            const inputs = document.querySelectorAll('.essay-score-input');
+            let sum = 0;
+            let count = 0;
+
+            inputs.forEach(inp => {
+                const qid = Number(inp.dataset.qid);
+                let val = Number(inp.value);
+                if (isNaN(val) || val < 0) val = 0;
+                if (val > 100) val = 100;
+                r.essayScores[qid] = val;
+                sum += val;
+                count++;
+            });
+
+            r.scoreEssay = count > 0 ? Number((sum / count).toFixed(2)) : 0;
+            r.essayGraded = true;
+            r.finalScore = calculateFinalScore(r.scorePG, r.scoreEssay);
+
+            saveResultsStorage();
+            closeModal();
+            renderTeacherDashboard();
+            renderResultsTable();
+            populateCertificateSelect();
+
+            const certSelect = document.getElementById('certParticipantSelect');
+            if (certSelect) {
+                certSelect.value = r.id;
+                renderCertificatePreview();
+            }
+
+            showModal(
+                '✅ Nilai Essay Tersimpan',
+                `<p>Nilai Essay untuk <strong>${escapeHTML(r.studentName)}</strong> berhasil disimpan dan langsung diperbarui ke <strong>Hasil Peserta</strong> serta <strong>Sertifikat</strong>.</p>
+                 <div style="background:#f0f9ff; border:1px solid #bae6fd; padding:0.85rem; border-radius:8px; margin-top:0.75rem; font-size:0.9rem;">
+                    <div>Nilai PG (${appSettings.weightPG}%): <strong>${r.scorePG}</strong></div>
+                    <div>Nilai Essay (${appSettings.weightEssay}%): <strong>${r.scoreEssay}</strong></div>
+                    <div style="margin-top:0.25rem; font-size:1rem; color:var(--primary-dark);">Nilai Akhir: <strong>${r.finalScore}</strong> (${getPredicate(r.finalScore).code})</div>
+                 </div>`,
+                [
+                    { text: 'Tutup', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: '📋 Lihat Hasil Peserta',
+                        class: 'btn-primary',
+                        onClick: () => {
+                            closeModal();
+                            navigateTo('hasil');
+                        }
+                    },
+                    {
+                        text: '🎓 Lihat Sertifikat',
+                        class: 'btn-secondary',
+                        onClick: () => {
+                            closeModal();
+                            navigateTo('sertifikat');
+                        }
+                    }
+                ]
+            );
+        }
+
+        /**
+         * 10. PANEL ADMIN, LOGIN GURU/ADMIN, BANK SOAL & KISI-KISI
+         */
+        function handleDashboardLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('dashboardPassInput').value;
+            if (pass === appSettings.adminPass) {
+                isAdminLoggedIn = true;
+                document.getElementById('dashboardPassInput').value = '';
+                syncTeacherAuthViews();
+                renderTeacherDashboard();
+            } else {
+                showModal('🚫 Login Gagal', '<p>Kata sandi Guru / Admin yang Anda masukkan salah.</p>');
+            }
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPassInput').value;
+            if (pass === appSettings.adminPass) {
+                isAdminLoggedIn = true;
+                document.getElementById('adminPassInput').value = '';
+                syncTeacherAuthViews();
+                renderAllAdminAndDashboard();
+            } else {
+                showModal('🚫 Login Gagal', '<p>Kata sandi Guru / Admin yang Anda masukkan salah.</p>');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            syncTeacherAuthViews();
+        }
+
+        function switchAdminTab(tabKey, btnEl) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
+            const target = document.getElementById(`adminTab-${tabKey}`);
+            if (target) target.style.display = 'block';
+            if (btnEl) btnEl.classList.add('active');
+        }
+
+        function renderAllAdminAndDashboard() {
+            renderTeacherDashboard();
+            renderAdminQuestionsTable();
+            renderKisiKisiTable('kisiKisiTableContainer');
+            renderAdminParticipantsTable();
+        }
+
+        function saveExamSettings(e) {
+            e.preventDefault();
+            const wPG = Number(document.getElementById('setWeightPG').value);
+            const wEssay = Number(document.getElementById('setWeightEssay').value);
+
+            if (wPG + wEssay !== 100) {
+                showModal('⚠️ Validasi Bobot', '<p>Total bobot Pilihan Ganda dan Essay harus berjumlah <strong>100%</strong>.</p>');
+                return;
+            }
+
+            appSettings.school = document.getElementById('setSchool').value.trim();
+            appSettings.teacher = document.getElementById('setTeacher').value.trim();
+            appSettings.subject = document.getElementById('setSubject').value.trim();
+            appSettings.className = document.getElementById('setClass').value.trim();
+            appSettings.year = document.getElementById('setYear').value.trim();
+            appSettings.examDate = document.getElementById('setExamDate').value.trim() || '27 November 2026';
+            appSettings.durationMinutes = Number(document.getElementById('setDuration').value) || 120;
+            appSettings.weightPG = wPG;
+            appSettings.weightEssay = wEssay;
+            appSettings.adminPass = document.getElementById('setAdminPass').value.trim() || 'waliwa2026';
+
+            saveSettingsStorage();
+            applySettingsToUI();
+
+            // Hitung ulang nilai akhir seluruh peserta berdasarkan bobot terbaru
+            examResults.forEach(r => {
+                r.finalScore = calculateFinalScore(r.scorePG, r.scoreEssay);
+            });
+            saveResultsStorage();
+            renderAllAdminAndDashboard();
+            renderResultsTable();
+
+            showModal('✅ Pengaturan Disimpan', '<p>Identitas ujian, tanggal pelaksanaan, durasi, dan bobot penilaian berhasil diperbarui.</p>');
+        }
+
+        function renderAdminQuestionsTable() {
+            const tbody = document.getElementById('adminQuestionsBody');
+            if (!tbody) return;
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+
+            tbody.innerHTML = appQuestions.map((q, idx) => `
+                <tr>
+                    <td><strong>${idx + 1}</strong></td>
+                    <td><span class="badge ${q.type === 'PG' ? 'badge-blue' : 'badge-amber'}">${q.type}</span></td>
+                    <td>${q.level}</td>
+                    <td>${q.tp}</td>
+                    <td style="max-width:360px;">${escapeHTML(q.question.slice(0, 115))}${q.question.length > 115 ? '...' : ''}</td>
+                    <td><strong>${q.type === 'PG' ? letters[q.answer] : 'Skor 0–100'}</strong></td>
+                    <td>
+                        <button class="btn btn-outline btn-sm" onclick="openEditQuestionModal(${idx})">✏️ Edit</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function openEditQuestionModal(idx) {
+            const q = appQuestions[idx];
+            if (!q) return;
+
+            let formHTML = `
+                <div class="form-group">
+                    <label class="form-label">Tujuan Pembelajaran (TP)</label>
+                    <select id="editQTP" class="form-control">
+                        ${Object.keys(LEARNING_OBJECTIVES).map(tpKey =>
+                            `<option value="${tpKey}" ${q.tp === tpKey ? 'selected' : ''}>${tpKey} - ${escapeHTML(LEARNING_OBJECTIVES[tpKey].slice(0, 80))}...</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Pertanyaan / Stimulus Soal</label>
+                    <textarea id="editQText" class="form-control" rows="4">${escapeHTML(q.question)}</textarea>
+                </div>
+            `;
+
+            if (q.type === 'PG') {
+                const letters = ['A', 'B', 'C', 'D', 'E'];
+                q.options.forEach((opt, oIdx) => {
+                    formHTML += `
+                        <div class="form-group">
+                            <label class="form-label">Pilihan ${letters[oIdx]}</label>
+                            <input type="text" id="editQOpt_${oIdx}" class="form-control" value="${escapeHTML(opt)}">
+                        </div>
+                    `;
+                });
+                formHTML += `
+                    <div class="form-group">
+                        <label class="form-label">Kunci Jawaban Benar</label>
+                        <select id="editQAnswer" class="form-control">
+                            ${letters.map((letChar, oIdx) => `<option value="${oIdx}" ${q.answer === oIdx ? 'selected' : ''}>Pilihan ${letChar}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            } else {
+                formHTML += `
+                    <div class="form-group">
+                        <label class="form-label">Kunci Jawaban Essay</label>
+                        <textarea id="editQAnswerKey" class="form-control" rows="3">${escapeHTML(q.answerKey || '')}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pedoman / Rubrik Penskoran</label>
+                        <textarea id="editQRubric" class="form-control" rows="3">${escapeHTML(q.rubric || '')}</textarea>
+                    </div>
+                `;
+            }
+
+            showModal(
+                `✏️ Edit Soal No. ${idx + 1} (${q.type} - ${q.level})`,
+                formHTML,
+                [
+                    { text: 'Batal', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: '💾 Simpan Perubahan',
+                        class: 'btn-primary',
+                        onClick: () => saveEditedQuestion(idx)
+                    }
+                ],
+                true
+            );
+        }
+
+        function saveEditedQuestion(idx) {
+            const q = appQuestions[idx];
+            q.tp = document.getElementById('editQTP').value;
+            q.question = document.getElementById('editQText').value.trim();
+
+            if (q.type === 'PG') {
+                for (let i = 0; i < 5; i++) {
+                    q.options[i] = document.getElementById(`editQOpt_${i}`).value.trim();
+                }
+                q.answer = Number(document.getElementById('editQAnswer').value);
+            } else {
+                q.answerKey = document.getElementById('editQAnswerKey').value.trim();
+                q.rubric = document.getElementById('editQRubric').value.trim();
+            }
+
+            saveQuestionsStorage();
+            renderAllAdminAndDashboard();
+            closeModal();
+            showModal('✅ Soal Diperbarui', `<p>Perubahan pada soal nomor <strong>${idx + 1}</strong> berhasil disimpan.</p>`);
+        }
+
+        function resetDefaultQuestions() {
+            showModal(
+                '🔄 Kembalikan Bank Soal Bawaan',
+                '<p>Apakah Anda yakin ingin mengembalikan seluruh 35 soal ke versi standar awal?</p>',
+                [
+                    { text: 'Batal', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: 'Ya, Kembalikan',
+                        class: 'btn-warning',
+                        onClick: () => {
+                            appQuestions = JSON.parse(JSON.stringify(DEFAULT_QUESTIONS));
+                            saveQuestionsStorage();
+                            renderAllAdminAndDashboard();
+                            closeModal();
+                        }
+                    }
+                ]
+            );
+        }
+
+        function renderKisiKisiTable(targetContainerId) {
+            const container = document.getElementById(targetContainerId);
+            if (!container) return;
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+
+            let rowsHTML = appQuestions.map((q, idx) => `
+                <tr>
+                    <td><strong>${idx + 1}</strong></td>
+                    <td style="font-size:0.82rem;"><strong>${q.tp}:</strong> ${escapeHTML(LEARNING_OBJECTIVES[q.tp])}</td>
+                    <td>${escapeHTML(q.materi)}</td>
+                    <td>${escapeHTML(q.indikator)}</td>
+                    <td><span class="badge badge-teal">${q.level}</span></td>
+                    <td>${q.type === 'PG' ? 'Pilihan Ganda' : 'Essay'}</td>
+                    <td><strong>${q.type === 'PG' ? letters[q.answer] : 'Rubrik (Maks 100)'}</strong></td>
+                </tr>
+            `).join('');
+
+            container.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Tujuan Pembelajaran (TP)</th>
+                            <th>Materi Pokok</th>
+                            <th>Indikator Soal</th>
+                            <th>Level</th>
+                            <th>Bentuk</th>
+                            <th>Kunci</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rowsHTML}</tbody>
+                </table>
+            `;
+        }
+
+        function openKisiKisiModal() {
+            if (!isAdminLoggedIn) {
+                showModal(
+                    '🔐 Verifikasi Guru / Administrator',
+                    `<p style="margin-bottom:0.75rem;">Masukkan kata sandi Guru/Admin untuk melihat Kisi-Kisi, Kunci Jawaban, dan Capaian Pembelajaran:</p>
+                     <input type="password" id="kisiPassInput" class="form-control" placeholder="Masukkan kata sandi..." autocomplete="current-password" onkeydown="if(event.key==='Enter'){event.preventDefault(); verifyKisiKisiPass();}">`,
+                    [
+                        { text: 'Batal', class: 'btn-outline', onClick: closeModal },
+                        { text: '🔓 Buka Kisi-Kisi', class: 'btn-primary', onClick: verifyKisiKisiPass }
+                    ]
+                );
+                setTimeout(() => {
+                    const inp = document.getElementById('kisiPassInput');
+                    if (inp) inp.focus();
+                }, 100);
+                return;
+            }
+
+            showModal(
+                '📑 Kisi-Kisi & 6 Tujuan Pembelajaran SAS Ganjil',
+                `<div id="modalKisiKisiBox" class="table-responsive" style="max-height:60vh;"></div>`,
+                [{ text: 'Tutup', class: 'btn-primary', onClick: closeModal }],
+                true
+            );
+            renderKisiKisiTable('modalKisiKisiBox');
+        }
+
+        function verifyKisiKisiPass() {
+            const inp = document.getElementById('kisiPassInput');
+            const pass = inp ? inp.value : '';
+            if (pass === appSettings.adminPass) {
+                isAdminLoggedIn = true;
+                syncTeacherAuthViews();
+                openKisiKisiModal();
+            } else {
+                showModal('🚫 Sandi Salah', '<p>Kata sandi yang Anda masukkan tidak sesuai. Kisi-kisi dan kunci jawaban tetap dikunci.</p>');
+            }
+        }
+
+        function printKisiKisi() {
+            const printArea = document.getElementById('printArea');
+            printArea.innerHTML = `
+                <div style="padding:1.5rem; font-family:sans-serif;">
+                    <h2 style="text-align:center;">KISI-KISI PENULISAN SOAL SUMATIF AKHIR SEMESTER GANJIL</h2>
+                    <p style="text-align:center; margin-bottom:1rem;">${escapeHTML(appSettings.school)} • ${escapeHTML(appSettings.subject)} (${escapeHTML(appSettings.className)}) • TP ${escapeHTML(appSettings.year)}</p>
+                    ${document.getElementById('kisiKisiTableContainer').innerHTML}
+                </div>
+            `;
+            window.print();
+        }
+
+        function renderAdminParticipantsTable() {
+            const tbody = document.getElementById('adminParticipantsBody');
+            if (examResults.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Belum ada peserta terdaftar.</td></tr>';
+                return;
+            }
+            tbody.innerHTML = examResults.map(r => `
+                <tr>
+                    <td><strong>${escapeHTML(r.studentNumber)}</strong></td>
+                    <td>${escapeHTML(r.studentName)}</td>
+                    <td>${escapeHTML(r.studentClass)}</td>
+                    <td><strong>${r.finalScore}</strong></td>
+                    <td>${r.tabViolations || 0} kali</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteSingleResult('${r.id}')">🗑️ Hapus / Reset</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteSingleResult(resultId) {
+            const r = examResults.find(item => item.id === resultId);
+            if (!r) return;
+            showModal(
+                '🗑️ Hapus Data Peserta',
+                `<p>Hapus hasil ujian atas nama <strong>${escapeHTML(r.studentName)}</strong> (${escapeHTML(r.studentNumber)})? Peserta tersebut akan dapat mengerjakan ujian kembali.</p>`,
+                [
+                    { text: 'Batal', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: 'Ya, Hapus',
+                        class: 'btn-danger',
+                        onClick: () => {
+                            examResults = examResults.filter(item => item.id !== resultId);
+                            saveResultsStorage();
+                            renderAllAdminAndDashboard();
+                            renderResultsTable();
+                            closeModal();
+                        }
+                    }
+                ]
+            );
+        }
+
+        function confirmResetAllResults() {
+            showModal(
+                '⚠️ Peringatan Reset Semua Data',
+                '<p>Seluruh data nilai dan jawaban peserta akan dihapus permanen dari penyimpanan browser ini. Pastikan Anda sudah melakukan Backup jika diperlukan.</p>',
+                [
+                    { text: 'Batal', class: 'btn-outline', onClick: closeModal },
+                    {
+                        text: 'Hapus Permanen Semua Hasil',
+                        class: 'btn-danger',
+                        onClick: () => {
+                            examResults = [];
+                            saveResultsStorage();
+                            renderAllAdminAndDashboard();
+                            renderResultsTable();
+                            closeModal();
+                        }
+                    }
+                ]
+            );
+        }
+
+        function backupDatabaseJSON() {
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                app: 'SAS_MANAJEMEN_KUALITAS_AIR_SMK_WALIWA_LAIMU',
+                settings: appSettings,
+                questions: appQuestions,
+                results: examResults
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Backup_SAS_MKA_WaliwaLaimu_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function restoreDatabaseJSON() {
+            const fileInput = document.getElementById('restoreFileInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                showModal('Pilih File', '<p>Silakan pilih file backup (.json) terlebih dahulu.</p>');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (!data.results || !Array.isArray(data.results)) {
+                        throw new Error('Format file backup tidak valid.');
+                    }
+
+                    // Gabungkan hasil ujian berdasarkan studentNumber agar tidak duplikat
+                    let addedCount = 0;
+                    data.results.forEach(incoming => {
+                        const exists = examResults.some(
+                            existing => existing.studentNumber.toLowerCase() === incoming.studentNumber.toLowerCase()
+                        );
+                        if (!exists) {
+                            examResults.push(incoming);
+                            addedCount++;
+                        }
+                    });
+
+                    saveResultsStorage();
+                    renderAllAdminAndDashboard();
+                    renderResultsTable();
+                    fileInput.value = '';
+
+                    showModal(
+                        '✅ Impor Data Berhasil',
+                        `<p>Berhasil menggabungkan <strong>${addedCount} data hasil peserta baru</strong> ke dalam database aplikasi.</p>`
+                    );
+                } catch (err) {
+                    showModal('❌ Gagal Membaca File', `<p>Terjadi kesalahan saat memproses file backup: ${escapeHTML(err.message)}</p>`);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        /**
+         * 11. UTILITAS KEAMANAN TEKS (XSS ESCAPE)
+         */
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+</html>
